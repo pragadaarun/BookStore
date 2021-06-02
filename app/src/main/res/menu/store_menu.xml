@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item android:id="@+id/note"
+            android:icon="@drawable/ic_baseline_favorite_24"
+            android:title="@string/favourites"
+            app:showAsAction="ifRoom"/>
+
+        <item android:id="@+id/reminder"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:title="@string/cart"
+            app:showAsAction="ifRoom"/>
+
+        <item android:id="@+id/profile"
+            android:title="@string/profile"/>
+
+        <item android:id="@+id/orders"
+            android:title="@string/orders"/>
+
+    <item android:id="@+id/sign_out"
+        android:icon="@drawable/ic_baseline_login_24"
+        android:title="@string/sign_out"/>
+</menu>
