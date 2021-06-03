@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -32,6 +33,7 @@ public class LoginFragment extends Fragment {
     private EditText loginEmail, loginPassword;
     private Button loginButton;
     private SharedPreference sharedPreference;
+    private UserRepository userRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class LoginFragment extends Fragment {
         loginEmail = getView().findViewById(R.id.login_email);
         loginPassword = getView().findViewById(R.id.login_password);
         loginButton = getView().findViewById(R.id.login_button);
+        sharedPreference = new SharedPreference(getContext());
     }
 
     private void logInValidation() throws IOException {

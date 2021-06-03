@@ -5,15 +5,21 @@ public class BookModel {
     private String title;
     private String author;
     private String description;
+    private String bookImage;
     private float price;
 
+    public BookModel() {
 
-    public BookModel(String title, String author, String description, float price) {
+    }
+
+    public BookModel(String title, String author, String description, String bookImage, float price) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
+        this.bookImage = bookImage;
     }
+
 
     public String getTitle() {
         return title;
@@ -45,5 +51,13 @@ public class BookModel {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public String getBookImage() {
+        return bookImage;
+    }
+
+    public void setBookImage(String bookImage) {
+        this.bookImage = bookImage;
     }
 }
