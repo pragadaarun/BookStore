@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 
 public class SharedPreference {
 
-    private static final String TITLE = "title";
-    private static final String CONTENT = "content" ;
+    private static int presentUserId;
+    private static int registeredUsersCount;
     private Context context;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String IS_LOGGED_IN = "Logged_In";
@@ -27,5 +27,21 @@ public class SharedPreference {
     public boolean getLoggedIN(){
         return sharedPreferences.getBoolean(IS_LOGGED_IN,false);
 
+    }
+
+    public int getPresentUserId() {
+        return presentUserId;
+    }
+
+    public void setPresentUserId(int presentUserId) {
+        this.presentUserId = presentUserId;
+    }
+
+    public int getRegisteredUsersCount() {
+        return registeredUsersCount;
+    }
+
+    public void setRegisteredUsersCount(int registeredUsersCount) {
+        this.registeredUsersCount = registeredUsersCount;
     }
 }

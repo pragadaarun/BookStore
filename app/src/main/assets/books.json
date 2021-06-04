@@ -1,26 +1,30 @@
 [
   {
-    "title": "THE GUIDE",
-    "author": "R.k Narayan",
-    "bookImage": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1494428973l/43641._SY475_.jpg",
-    "price" : 233
-  },
-  {
+    "bookId" : 1,
     "title": "WINGS OF FIRE",
     "author": "APJ Abdul Kalam",
     "bookImage": "https://upload.wikimedia.org/wikipedia/en/3/3a/Wings_of_Fire_by_A_P_J_Abdul_Kalam_Book_Cover.jpg",
     "price" : 220.9
   },
   {
+    "bookId" : 2,
+    "title": "Second World War Sandwich",
+    "author": "Digonta Bordoloi",
+    "bookImage": "https://images-na.ssl-images-amazon.com/images/I/51qcsX3-mSL._SX322_BO1,204,203,200_.jpg",
+    "price" : 533
+  },
+  {
+    "bookId" : 3,
     "title": "A PASSAGE TO INDIA",
     "author": "E.M FORESTER",
     "bookImage": "https://upload.wikimedia.org/wikipedia/en/thumb/5/54/APassageToIndia.jpg/330px-APassageToIndia.jpg",
     "price" : 220.9
   },
   {
+    "bookId" : 4,
     "title": "THE HUNGRY TIDE",
     "author": "Amitav Ghosh",
     "bookImage": "https://upload.wikimedia.org/wikipedia/en/8/8e/The_Hungry_Tide.jpg",
-    "price" : 220.9
+    "price" : 467.9
   }
 ]

@@ -1,5 +1,6 @@
 package com.bridgeLabz.bookstore.UI.Fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -26,26 +27,30 @@ import java.util.List;
 public class BooksListFragment extends Fragment {
 
     private BooksListAdapter booksListAdapter;
-    private static final String TAG = "FragmentBooks";
+    private static final String TAG = "BooksListFragment";
     private ArrayList<BookModel> bookList = new ArrayList<>();
-    //    private RecyclerView.LayoutManager layoutManager;
-//    BookListManager bookListManager;
     private RecyclerView recyclerView;
+    private int spanCount;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
-        final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+            spanCount = 2;
+        } else {
+            // In portrait
+            spanCount = 1;
+        }
+        final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
         recyclerView = view.findViewById(R.id.bookList_RecyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         getBooks();
-
         return view;
-
     }
 
     private void getBooks() {
@@ -57,8 +62,7 @@ public class BooksListFragment extends Fragment {
             booksListAdapter = new BooksListAdapter(bookArrayList);
             recyclerView.setAdapter(booksListAdapter);
             booksListAdapter.notifyDataSetChanged();
-
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

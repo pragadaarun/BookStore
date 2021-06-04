@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RegisterFragment extends Fragment {
@@ -63,6 +64,8 @@ public class RegisterFragment extends Fragment {
         verifyPassword = getView().findViewById(R.id.register_password_verify);
         registerButton = getView().findViewById(R.id.register_button);
         loginText = getView().findViewById(R.id.back_to_login);
+        sharedPreference = new SharedPreference(getContext());
+
     }
 
     private void viewListeners() {
@@ -84,48 +87,42 @@ public class RegisterFragment extends Fragment {
         String confirmPassword = verifyPassword.getText().toString();
         String jsonString;
 
-        if (!isValidName(name)) {
-            return;
-        } else if (!isValidEmail(email)) {
-            return;
-        } else if (!isValidPassword(password, confirmPassword)) {
-            return;
-        } else if (name.isEmpty() && email.isEmpty() && password.isEmpty()) {
-            Toast.makeText(getContext(), "Fields Are Empty!",
+        if (!isValidName(name) && (!isValidEmail(email))
+                && (!isValidPassword(password, confirmPassword))
+                && (name.isEmpty() && email.isEmpty() && password.isEmpty())) {
+            Toast.makeText(getContext(), "Please provide required fields",
                     Toast.LENGTH_SHORT).show();
         } else  if (!(email.isEmpty() && password.isEmpty())){
             try{
                 File file = new File(getActivity().getFilesDir(), "users.json");
+                ObjectMapper mapper = new ObjectMapper();
+                ArrayList<UserModel> userList = new ArrayList<>();
+                List<Integer> favouriteItemList = new ArrayList<>();
+                int userId = checkRegisters();
+                UserModel user = new UserModel(userId, name, email, password, favouriteItemList);
+                userList.add(user);
+
                 if (file.exists()){
-                    ObjectMapper mapper = new ObjectMapper();
-                    ArrayList<UserModel> userList = new ArrayList<>();
-                    UserModel user = new UserModel(email,password,name);
-                    userList.add(user);
                     ArrayList<UserModel>  userList1 = mapper.readValue(new File(getActivity().getFilesDir(),
                             "users.json"),new TypeReference<List<UserModel>>(){} );
 
                     List<UserModel> joined = new ArrayList<UserModel>();
 
-                    joined.addAll(userList);
                     joined.addAll(userList1);
+                    joined.addAll(userList);
 
                     jsonString = mapper.writeValueAsString(joined);
 
                     FileOutputStream fos = getActivity().openFileOutput("users.json", Context.MODE_PRIVATE);
                     fos.write(jsonString.getBytes());
                     fos.close();
-                    moveToStoreActivity();
                 } else {
-                    ObjectMapper mapper = new ObjectMapper();
-                    List<UserModel> userList = new ArrayList<UserModel>();
-                    UserModel user = new UserModel(email,password,name);
-                    userList.add(user);
                     jsonString = mapper.writeValueAsString(userList);
                     FileOutputStream fos = getActivity().openFileOutput("users.json", Context.MODE_PRIVATE);
                     fos.write(jsonString.getBytes());
                     fos.close();
-                    moveToStoreActivity();
                 }
+                moveToStoreActivity();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -133,8 +130,14 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    private int checkRegisters() {
+        if(sharedPreference.getRegisteredUsersCount() == 0){
+            sharedPreference.setRegisteredUsersCount(1);
+        }
+        return sharedPreference.getRegisteredUsersCount() + 1;
+    }
+
     private void moveToStoreActivity() {
-        sharedPreference = new SharedPreference(getContext());
         sharedPreference.setLoggedIN(true);
         startActivity(new Intent(getContext(), StoreActivity.class));
     }

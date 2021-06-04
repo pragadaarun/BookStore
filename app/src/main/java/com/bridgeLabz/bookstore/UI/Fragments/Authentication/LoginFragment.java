@@ -36,11 +36,6 @@ public class LoginFragment extends Fragment {
     private UserRepository userRepository;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -104,7 +99,7 @@ public class LoginFragment extends Fragment {
                     "users.json"),new TypeReference<List<UserModel>>(){} );
             int i;
             boolean isLoggedIN = false;
-            for (i=0;i<userList1.size();i++) {
+            for (i=1;i<userList1.size();i++) {
                 if(userList1.get(i).getUserEmail().equals(email) && userList1.get(i).getUserPassword().equals(password)) {
                     isLoggedIN = true;
 
@@ -114,10 +109,11 @@ public class LoginFragment extends Fragment {
             if (isLoggedIN){
                 Toast.makeText(getContext(), "Sign In Successful!", Toast.LENGTH_SHORT).show();
                 sharedPreference.setLoggedIN(true);
+                sharedPreference.setPresentUserId(i);
                 startActivity(new Intent(getContext(), StoreActivity.class));
             }
             else {
-                Toast.makeText(getContext(),"Error Occurred!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Credentials Wrong", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -2,6 +2,7 @@ package com.bridgeLabz.bookstore.Model;
 
 public class BookModel {
 
+    private int bookId;
     private String title;
     private String author;
     private String description;
@@ -12,14 +13,14 @@ public class BookModel {
 
     }
 
-    public BookModel(String title, String author, String description, String bookImage, float price) {
+    public BookModel(int bookId, String title, String author, String description, String bookImage, float price) {
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.bookImage = bookImage;
     }
-
 
     public String getTitle() {
         return title;
@@ -59,5 +60,13 @@ public class BookModel {
 
     public void setBookImage(String bookImage) {
         this.bookImage = bookImage;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }

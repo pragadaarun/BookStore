@@ -1,15 +1,21 @@
 package com.bridgeLabz.bookstore.Model;
 
+import java.util.List;
+
 public class UserModel {
 
+    private int userId;
     private String userName;
     private String userEmail;
     private String userPassword;
+    private List<Integer> favouriteItemsList;
 
-    public UserModel(String userName, String userEmail, String userPassword) {
+    public UserModel(int userId, String userName, String userEmail, String userPassword, List<Integer> favouriteItemsList) {
+        this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
+        this.favouriteItemsList = favouriteItemsList;
     }
 
     public UserModel() {
@@ -37,5 +43,21 @@ public class UserModel {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public List<Integer> getFavouriteItemsList() {
+        return favouriteItemsList;
+    }
+
+    public void setFavouriteItemsList(List<Integer> favouriteItemsList) {
+        this.favouriteItemsList = favouriteItemsList;
     }
 }
