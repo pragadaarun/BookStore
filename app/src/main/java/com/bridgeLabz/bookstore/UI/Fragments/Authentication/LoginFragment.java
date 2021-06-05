@@ -92,7 +92,7 @@ public class LoginFragment extends Fragment {
             loginPassword.setError("Please enter Valid password");
             loginPassword.requestFocus();
         }
-        else  if(!(email.isEmpty() && password.isEmpty())){
+        else {
 
             ObjectMapper mapper = new ObjectMapper();
             List<UserModel> userList1 = mapper.readValue(new File(getActivity().getFilesDir(),

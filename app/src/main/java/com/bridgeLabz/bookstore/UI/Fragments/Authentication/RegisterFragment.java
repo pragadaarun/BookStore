@@ -99,6 +99,8 @@ public class RegisterFragment extends Fragment {
                 ArrayList<UserModel> userList = new ArrayList<>();
                 List<Integer> favouriteItemList = new ArrayList<>();
                 int userId = checkRegisters();
+                sharedPreference.setRegisteredUsersCount(userId);
+                sharedPreference.setPresentUserId(userId);
                 UserModel user = new UserModel(userId, name, email, password, favouriteItemList);
                 userList.add(user);
 
@@ -131,9 +133,6 @@ public class RegisterFragment extends Fragment {
     }
 
     private int checkRegisters() {
-        if(sharedPreference.getRegisteredUsersCount() == 0){
-            sharedPreference.setRegisteredUsersCount(1);
-        }
         return sharedPreference.getRegisteredUsersCount() + 1;
     }
 

@@ -12,13 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
+import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
+import com.bridgeLabz.bookstore.UI.Adapters.FavouriteAdapter;
+import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,15 +35,17 @@ public class FavouriteFragment extends Fragment {
 
     private BooksListAdapter booksListAdapter;
     private static final String TAG = "FavouriteFragment";
-    private ArrayList<BookModel> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private int spanCount;
+    private BookRepository bookRepository;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
+        bookRepository = new BookRepository(getContext());
+        ArrayList<BookModel> favourites = getFavoriteBooks();
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -49,38 +58,25 @@ public class FavouriteFragment extends Fragment {
         recyclerView = view.findViewById(R.id.bookList_RecyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        getFavoriteBooks();
+        booksListAdapter = new BooksListAdapter(favourites, new OnBookListener() {
+            @Override
+            public void onBookClick(int position, View viewHolder) {
+                Toast.makeText(getContext(), "Book is in Favourite List", Toast.LENGTH_SHORT).show();
+            }
+        });
+        recyclerView.setAdapter(booksListAdapter);
+        booksListAdapter.notifyDataSetChanged();
         return view;
     }
 
-    private void getFavoriteBooks() {
-
-        try {
-            String data = loadJSONFromAsset();
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayList<BookModel> bookArrayList = mapper.readValue(data, new TypeReference<List<BookModel>>(){} );
-            booksListAdapter = new BooksListAdapter(bookArrayList);
-            recyclerView.setAdapter(booksListAdapter);
-            booksListAdapter.notifyDataSetChanged();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private ArrayList<BookModel> getFavoriteBooks() {
+        ArrayList<BookModel> favoriteBooks = new ArrayList<>();
+        for(BookModel book : bookRepository.getBookList()){
+            if(book.isFavourite()){
+                favoriteBooks.add(book);
+            }
         }
+        return favoriteBooks;
     }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getActivity().getAssets().open("books.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        Log.e(TAG, "loadJSONFromAsset: " + json );
-        return json;
-    }
 }

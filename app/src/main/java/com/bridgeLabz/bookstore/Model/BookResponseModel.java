@@ -1,6 +1,6 @@
 package com.bridgeLabz.bookstore.Model;
 
-public class BookModel {
+public class BookResponseModel {
 
     private int bookId;
     private String title;
@@ -8,32 +8,19 @@ public class BookModel {
     private String description;
     private String bookImage;
     private float price;
-//    private boolean isCarted;
-    private boolean isFavourite;
 
-    public BookModel() {
+    public BookResponseModel() {
 
     }
 
-    public BookModel(int bookId, String title, String author, String description,
-                     String bookImage, float price, /*boolean isCarted,*/ boolean isFavourite) {
+    public BookResponseModel(int bookId, String title, String author, String description,
+                     String bookImage, float price) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.bookImage = bookImage;
-//        this.isCarted = isCarted;
-        this.isFavourite = isFavourite;
-    }
-
-    public BookModel(BookResponseModel bookResponseModel) {
-        this.bookId = bookResponseModel.getBookId();
-        this.title = bookResponseModel.getTitle();
-        this.author = bookResponseModel.getAuthor();
-        this.description = bookResponseModel.getDescription();
-        this.price = bookResponseModel.getPrice();
-        this.bookImage = bookResponseModel.getBookImage();
     }
 
     public String getTitle() {
@@ -84,19 +71,4 @@ public class BookModel {
         this.bookId = bookId;
     }
 
-//    public boolean isCarted() {
-//        return isCarted;
-//    }
-
-//    public void setCarted(boolean carted) {
-//        isCarted = carted;
-//    }
-
-    public boolean isFavourite() {
-        return isFavourite;
-    }
-
-    public void setFavourite(boolean favourite) {
-        isFavourite = favourite;
-    }
 }

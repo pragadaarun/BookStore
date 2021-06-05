@@ -14,11 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
+import com.bridgeLabz.bookstore.Model.BookResponseModel;
+import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
+import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,6 +37,8 @@ public class BooksListFragment extends Fragment {
     private ArrayList<BookModel> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private int spanCount;
+    BookFragment bookFragment;
+    private BookRepository bookRepository;
 
     @Nullable
     @Override
@@ -38,6 +46,7 @@ public class BooksListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
         int orientation = getResources().getConfiguration().orientation;
+        bookRepository = new BookRepository(getContext());
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             spanCount = 2;
@@ -49,38 +58,32 @@ public class BooksListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.bookList_RecyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        getBooks();
+        initRecyclerView();
+
         return view;
     }
 
-    private void getBooks() {
+    private void initRecyclerView() {
 
-        try {
-            String data = loadJSONFromAsset();
-            ObjectMapper mapper = new ObjectMapper();
-            ArrayList<BookModel> bookArrayList = mapper.readValue(data, new TypeReference<List<BookModel>>(){} );
-            booksListAdapter = new BooksListAdapter(bookArrayList);
-            recyclerView.setAdapter(booksListAdapter);
-            booksListAdapter.notifyDataSetChanged();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ArrayList<BookModel> bookArrayList = bookRepository.getBookList();
+        booksListAdapter = new BooksListAdapter(bookArrayList, new OnBookListener() {
+            @Override
+            public void onBookClick(int position, View viewHolder) {
+                int bookId = booksListAdapter.getItem(position).getBookId();
+                bookFragment = new BookFragment();
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("BookID", bookId);
+
+                bookFragment.setArguments(bundle);
+
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.home_fragment_container, bookFragment)
+                        .addToBackStack(null).commit();
+            }
+        });
+        recyclerView.setAdapter(booksListAdapter);
+        booksListAdapter.notifyDataSetChanged();
     }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getActivity().getAssets().open("books.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        Log.e(TAG, "loadJSONFromAsset: " + json );
-        return json;
-    }
 }
