@@ -15,21 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
-import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
-import com.bridgeLabz.bookstore.UI.Adapters.FavouriteAdapter;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
-import com.bridgeLabz.bookstore.helper.SharedPreference;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FavouriteFragment extends Fragment {
 
@@ -45,7 +35,7 @@ public class FavouriteFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
         bookRepository = new BookRepository(getContext());
-        ArrayList<BookModel> favourites = getFavoriteBooks();
+        ArrayList<BookModel> favourites = bookRepository.getFavoriteBooks();
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -68,15 +58,4 @@ public class FavouriteFragment extends Fragment {
         booksListAdapter.notifyDataSetChanged();
         return view;
     }
-
-    private ArrayList<BookModel> getFavoriteBooks() {
-        ArrayList<BookModel> favoriteBooks = new ArrayList<>();
-        for(BookModel book : bookRepository.getBookList()){
-            if(book.isFavourite()){
-                favoriteBooks.add(book);
-            }
-        }
-        return favoriteBooks;
-    }
-
 }

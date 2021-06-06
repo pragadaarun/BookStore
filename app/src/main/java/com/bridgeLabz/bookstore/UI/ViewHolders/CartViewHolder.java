@@ -12,12 +12,12 @@ import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FavoriteViewHolder extends RecyclerView.ViewHolder {
+public class CartViewHolder extends RecyclerView.ViewHolder {
 
     public TextView bookTitle, bookAuthor, bookPrice;
     public ImageView bookImage;
 
-    public FavoriteViewHolder(@NonNull View itemView) {
+    public CartViewHolder(@NonNull View itemView) {
         super(itemView);
         bookTitle = itemView.findViewById(R.id.book_title);
         bookAuthor = itemView.findViewById(R.id.book_author);

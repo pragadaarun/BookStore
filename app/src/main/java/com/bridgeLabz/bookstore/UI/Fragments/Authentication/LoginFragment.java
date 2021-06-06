@@ -99,10 +99,9 @@ public class LoginFragment extends Fragment {
                     "users.json"),new TypeReference<List<UserModel>>(){} );
             int i;
             boolean isLoggedIN = false;
-            for (i=1;i<userList1.size();i++) {
+            for (i=0;i<userList1.size();i++) {
                 if(userList1.get(i).getUserEmail().equals(email) && userList1.get(i).getUserPassword().equals(password)) {
                     isLoggedIN = true;
-
                     break;
                 }
             }

@@ -8,7 +8,7 @@ public class BookModel {
     private String description;
     private String bookImage;
     private float price;
-//    private boolean isCarted;
+    private boolean isCarted;
     private boolean isFavourite;
 
     public BookModel() {
@@ -16,14 +16,14 @@ public class BookModel {
     }
 
     public BookModel(int bookId, String title, String author, String description,
-                     String bookImage, float price, /*boolean isCarted,*/ boolean isFavourite) {
+                     String bookImage, float price, boolean isCarted, boolean isFavourite) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.bookImage = bookImage;
-//        this.isCarted = isCarted;
+        this.isCarted = isCarted;
         this.isFavourite = isFavourite;
     }
 
@@ -84,13 +84,13 @@ public class BookModel {
         this.bookId = bookId;
     }
 
-//    public boolean isCarted() {
-//        return isCarted;
-//    }
+    public boolean isCarted() {
+        return isCarted;
+    }
 
-//    public void setCarted(boolean carted) {
-//        isCarted = carted;
-//    }
+    public void setCarted(boolean carted) {
+        isCarted = carted;
+    }
 
     public boolean isFavourite() {
         return isFavourite;

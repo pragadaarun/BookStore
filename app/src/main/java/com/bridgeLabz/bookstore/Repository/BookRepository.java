@@ -5,16 +5,17 @@ import android.util.Log;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.BookResponseModel;
+import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class BookRepository {
@@ -66,17 +67,61 @@ public class BookRepository {
         return bookList;
     }
 
-    public UserModel getLoggedInUser() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
-                "users.json"), new TypeReference<List<UserModel>>() {
-        });
-        for (UserModel user : userList) {
-            if (user.getUserId() == sharedPreference.getPresentUserId()) {
-                return user;
+    public UserModel getLoggedInUser() {
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
+                    "users.json"), new TypeReference<List<UserModel>>() {
+            });
+            for (UserModel user : userList) {
+                if (user.getUserId() == sharedPreference.getPresentUserId()) {
+                    return user;
+                }
+            }
+        } catch(IOException jsonException){
+            jsonException.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ArrayList<BookModel> getFavoriteBooks() {
+        ArrayList<BookModel> favoriteBooks = new ArrayList<>();
+        for(BookModel book : getBookList()){
+            if(book.isFavourite()){
+                favoriteBooks.add(book);
+            }
+        }
+        return favoriteBooks;
+    }
+
+    public BookModel getBook(int getBookById){
+
+        for(BookModel book : getBookList()){
+            if(book.getBookId() == getBookById){
+                return book;
             }
         }
         return null;
+    }
+
+    public void addBookToCart(int bookID) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
+                    "users.json"), new TypeReference<List<UserModel>>(){});
+            UserModel user = getLoggedInUser();
+            CartModel cart = new CartModel(bookID, 1);
+            List<CartModel> cartItemList = user.getCartItemList();
+            cartItemList.add(cart);
+            userList.get(user.getUserId()).setCartItemList(cartItemList);
+            String updatedFile = mapper.writeValueAsString(userList);
+            FileOutputStream fos = context.openFileOutput("users.json", Context.MODE_PRIVATE);
+            fos.write(updatedFile.getBytes());
+            fos.close();
+        } catch (IOException jsonParseException) {
+            jsonParseException.printStackTrace();
+        }
     }
 
 }

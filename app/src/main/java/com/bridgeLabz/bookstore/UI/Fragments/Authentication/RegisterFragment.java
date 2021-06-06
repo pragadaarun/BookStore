@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
@@ -27,7 +28,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RegisterFragment extends Fragment {
@@ -89,21 +89,25 @@ public class RegisterFragment extends Fragment {
 
         if (!isValidName(name) && (!isValidEmail(email))
                 && (!isValidPassword(password, confirmPassword))
-                && (name.isEmpty() && email.isEmpty() && password.isEmpty())) {
+                && (name.isEmpty() && email.isEmpty()
+                    && password.isEmpty() && confirmPassword.isEmpty())) {
+
             Toast.makeText(getContext(), "Please provide required fields",
                     Toast.LENGTH_SHORT).show();
+            return;
+
         } else  if (!(email.isEmpty() && password.isEmpty())){
             try{
                 File file = new File(getActivity().getFilesDir(), "users.json");
                 ObjectMapper mapper = new ObjectMapper();
                 ArrayList<UserModel> userList = new ArrayList<>();
                 List<Integer> favouriteItemList = new ArrayList<>();
+                List<CartModel> cartItemList = new ArrayList<>();
                 int userId = checkRegisters();
                 sharedPreference.setRegisteredUsersCount(userId);
-                sharedPreference.setPresentUserId(userId);
-                UserModel user = new UserModel(userId, name, email, password, favouriteItemList);
+//                sharedPreference.setPresentUserId(userId);
+                UserModel user = new UserModel(userId, name, email, password, favouriteItemList, cartItemList);
                 userList.add(user);
-
                 if (file.exists()){
                     ArrayList<UserModel>  userList1 = mapper.readValue(new File(getActivity().getFilesDir(),
                             "users.json"),new TypeReference<List<UserModel>>(){} );
@@ -124,7 +128,7 @@ public class RegisterFragment extends Fragment {
                     fos.write(jsonString.getBytes());
                     fos.close();
                 }
-                moveToStoreActivity();
+                moveToLoginFragment();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -136,9 +140,10 @@ public class RegisterFragment extends Fragment {
         return sharedPreference.getRegisteredUsersCount() + 1;
     }
 
-    private void moveToStoreActivity() {
-        sharedPreference.setLoggedIN(true);
-        startActivity(new Intent(getContext(), StoreActivity.class));
+    private void moveToLoginFragment() {
+        getParentFragmentManager().popBackStack();
+//        sharedPreference.setLoggedIN(true);
+//        startActivity(new Intent(getContext(), StoreActivity.class));
     }
 
     private boolean isValidName(String name){
@@ -151,7 +156,6 @@ public class RegisterFragment extends Fragment {
             userName.setError("Please enter proper name id");
             userName.requestFocus();
             return false;
-
         } else {
             return true;
         }
@@ -182,7 +186,7 @@ public class RegisterFragment extends Fragment {
             userPassword.setError("Please enter Valid password");
             userPassword.requestFocus();
             return false;
-        } else if (!password.equals(confirmPassword)) {
+        } else if (!(password.equals(confirmPassword) && confirmPassword.isEmpty())) {
             verifyPassword.setError("Password not Matches");
             verifyPassword.requestFocus();
             return false;
