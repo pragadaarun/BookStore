@@ -93,14 +93,14 @@
                 app:layout_constraintVertical_bias="0.961">
 
                 <ImageButton
-                    android:id="@+id/display_book_cart_minus_id"
+                    android:id="@+id/book_cart_minus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/ic_baseline_remove_circle_24"/>
 
                 <TextView
-                    android:id="@+id/display_book_cart_value_id"
+                    android:id="@+id/book_cart_value"
                     android:layout_width="wrap_content"
                     android:layout_height="19dp"
                     android:layout_gravity="center_vertical"
@@ -111,7 +111,7 @@
                     android:textSize="16sp" />
 
                 <ImageButton
-                    android:id="@+id/display_book_cart_add_id"
+                    android:id="@+id/book_cart_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

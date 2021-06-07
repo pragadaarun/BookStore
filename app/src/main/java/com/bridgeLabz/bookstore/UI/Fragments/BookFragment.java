@@ -2,6 +2,8 @@ package com.bridgeLabz.bookstore.UI.Fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,7 +16,10 @@ import android.widget.TextView;
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bumptech.glide.Glide;
+
+import java.util.Objects;
 
 public class BookFragment extends Fragment {
 
@@ -22,6 +27,7 @@ public class BookFragment extends Fragment {
     private TextView bookTitle, bookAuthor;
     private Button addToCart;
     BookRepository bookRepository;
+    CartRepository cartRepository;
     private int bookID;
 
     @Override
@@ -29,11 +35,12 @@ public class BookFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book, container, false);
-
+        cartRepository = new CartRepository(getContext());
         bookID = getArguments().getInt("BookID");
         findViews(view);
         setViews();
         setClickListeners();
+        onBackPressed(view);
         return view;
     }
 
@@ -60,5 +67,31 @@ public class BookFragment extends Fragment {
             bookRepository.addBookToCart(bookID);
             addToCart.setEnabled(false);
         });
+    }
+
+    private void onBackPressed(View view) {
+
+        Toolbar favoriteToolbar = (Toolbar) view.findViewById(R.id.book_toolbar);
+        favoriteToolbar.setTitle("Favourite Books");
+        favoriteToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        favoriteToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //handle any click event
+                getParentFragmentManager().popBackStack();
+
+            }
+        });
+    }
+
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
     }
 }

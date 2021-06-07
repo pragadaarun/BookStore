@@ -13,7 +13,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
-
+        getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.sign_in_container, new LoginFragment()).commit();
     }
 }

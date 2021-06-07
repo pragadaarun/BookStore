@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bridgeLabz.bookstore.Model.CartModel;
+import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
@@ -102,7 +103,7 @@ public class RegisterFragment extends Fragment {
                 ObjectMapper mapper = new ObjectMapper();
                 ArrayList<UserModel> userList = new ArrayList<>();
                 List<Integer> favouriteItemList = new ArrayList<>();
-                List<CartModel> cartItemList = new ArrayList<>();
+                List<CartResponseModel> cartItemList = new ArrayList<>();
                 int userId = checkRegisters();
                 sharedPreference.setRegisteredUsersCount(userId);
 //                sharedPreference.setPresentUserId(userId);

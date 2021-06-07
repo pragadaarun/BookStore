@@ -4,6 +4,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -20,6 +22,7 @@ import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FavouriteFragment extends Fragment {
 
@@ -33,7 +36,7 @@ public class FavouriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_books_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         bookRepository = new BookRepository(getContext());
         ArrayList<BookModel> favourites = bookRepository.getFavoriteBooks();
         int orientation = getResources().getConfiguration().orientation;
@@ -45,7 +48,7 @@ public class FavouriteFragment extends Fragment {
             spanCount = 1;
         }
         final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView = view.findViewById(R.id.bookList_RecyclerView);
+        recyclerView = view.findViewById(R.id.favourite_RecyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         booksListAdapter = new BooksListAdapter(favourites, new OnBookListener() {
@@ -56,6 +59,33 @@ public class FavouriteFragment extends Fragment {
         });
         recyclerView.setAdapter(booksListAdapter);
         booksListAdapter.notifyDataSetChanged();
+        onBackPressed(view);
         return view;
+    }
+
+    private void onBackPressed(View view) {
+
+        Toolbar favoriteToolbar = (Toolbar) view.findViewById(R.id.favourite_toolbar);
+        favoriteToolbar.setTitle("Favourite Books");
+        favoriteToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
+        favoriteToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //handle any click event
+                getParentFragmentManager().popBackStack();
+
+            }
+        });
+    }
+
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
     }
 }

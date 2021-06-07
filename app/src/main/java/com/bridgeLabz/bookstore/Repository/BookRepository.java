@@ -6,6 +6,7 @@ import android.util.Log;
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.BookResponseModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
+import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -61,6 +62,7 @@ public class BookRepository {
                 favouriteBook.setFavourite(favoriteBookIds.contains(bookResponseModel.getBookId()));
                 bookList.add(favouriteBook);
             }
+            Log.e(TAG, "getBookList: " + bookList);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -111,8 +113,8 @@ public class BookRepository {
             List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
                     "users.json"), new TypeReference<List<UserModel>>(){});
             UserModel user = getLoggedInUser();
-            CartModel cart = new CartModel(bookID, 1);
-            List<CartModel> cartItemList = user.getCartItemList();
+            CartResponseModel cart = new CartResponseModel(bookID, 1);
+            List<CartResponseModel> cartItemList = user.getCartItemList();
             cartItemList.add(cart);
             userList.get(user.getUserId()).setCartItemList(cartItemList);
             String updatedFile = mapper.writeValueAsString(userList);
