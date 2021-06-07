@@ -10,18 +10,20 @@ public class UserModel {
     private String userPassword;
     private List<Integer> favouriteItemsList;
     private List<CartResponseModel> cartItemList;
+    private List<AddressModel> addressList;
 
     public UserModel() {
 
     }
 
-    public UserModel(int userId, String userName, String userEmail, String userPassword, List<Integer> favouriteItemsList, List<CartResponseModel> cartItemList) {
+    public UserModel(int userId, String userName, String userEmail, String userPassword, List<Integer> favouriteItemsList, List<CartResponseModel> cartItemList, List<AddressModel> addressList) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.favouriteItemsList = favouriteItemsList;
         this.cartItemList = cartItemList;
+        this.addressList = addressList;
     }
 
     public String getUserName() {
@@ -70,5 +72,13 @@ public class UserModel {
 
     public void setCartItemList(List<CartResponseModel> cartItemList) {
         this.cartItemList = cartItemList;
+    }
+
+    public List<AddressModel> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<AddressModel> addressList) {
+        this.addressList = addressList;
     }
 }

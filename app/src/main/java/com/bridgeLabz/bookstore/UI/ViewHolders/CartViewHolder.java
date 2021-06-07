@@ -51,18 +51,18 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-//        removeImageButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(itemCount > 0) {
-//                    itemCount = itemCount - 1;
-//                    itemCountDisplay.setText(String.valueOf(itemCount));
-//                    bookPrice = cart.getBook().getPrice() * itemCount;
-//                    cartBookPrice.setText(String.valueOf(bookPrice));
-//                } else {
-//
-//                }
-//            }
-//        });
+        removeImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemCount > 0) {
+                    itemCount = itemCount - 1;
+                    itemCountDisplay.setText(String.valueOf(itemCount));
+                    bookPrice = cart.getBook().getPrice() * itemCount;
+                    cartBookPrice.setText(String.valueOf(bookPrice));
+                } else {
+
+                }
+            }
+        });
     }
 }

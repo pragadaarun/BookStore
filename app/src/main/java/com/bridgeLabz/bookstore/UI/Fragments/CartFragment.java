@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
@@ -34,10 +37,12 @@ public class CartFragment extends Fragment {
 
     private static final String TAG = "CartFragment";
     private CartRepository cartRepository;
-    private SharedPreference sharedPreference;
     private int spanCount;
     private RecyclerView cartRecyclerView;
     private CartAdapter cartAdapter;
+    private Button cartBuyButton;
+    private TextView cartTotalPrice;
+    SharedPreference sharedPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,10 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         cartRepository = new CartRepository(getContext());
-        List<CartModel> cartItemBooks = cartRepository.getCartList();
         sharedPreference = new SharedPreference(getContext());
+        List<CartModel> cartItemBooks = cartRepository.getCartList();
+        cartBuyButton = view.findViewById(R.id.cart_buy_button);
+        cartTotalPrice = view.findViewById(R.id.cart_total_price);
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -59,6 +66,7 @@ public class CartFragment extends Fragment {
             // In portrait
             spanCount = 1;
         }
+//        spanCount = (orientation == Configuration.ORIENTATION_LANDSCAPE)? 2 : 1;
         final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, StaggeredGridLayoutManager.VERTICAL);
         cartRecyclerView = view.findViewById(R.id.cart_RecyclerView);
         cartRecyclerView.setLayoutManager(layoutManager);
@@ -67,8 +75,32 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         onBackPressed(view);
+        buyBooks();
 
         return view;
+    }
+
+    private void buyBooks() {
+        cartBuyButton.setOnClickListener(v -> {
+            ObjectMapper mapper = new ObjectMapper();
+            List<UserModel> userList1 = null;
+            try {
+                userList1 = mapper.readValue(new File(getContext().getFilesDir(),
+                        "Users.json"), new TypeReference<List<UserModel>>(){});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<AddressModel> userAddress = userList1.get(sharedPreference.getPresentUserId()).getAddressList();
+            Fragment fragment;
+            if(userAddress.size() == 0){
+                fragment = new AddressFragment();
+            }else{
+                fragment = new AddressEditFragment();
+            }
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.home_fragment_container, fragment)
+                    .addToBackStack(null).commit();
+        });
     }
 
     private void onBackPressed(View view) {
@@ -84,8 +116,6 @@ public class CartFragment extends Fragment {
 
             }
         });
-
-
     }
 
     public void onResume() {

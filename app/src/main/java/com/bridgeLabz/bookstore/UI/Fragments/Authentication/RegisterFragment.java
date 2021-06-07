@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
@@ -104,10 +105,11 @@ public class RegisterFragment extends Fragment {
                 ArrayList<UserModel> userList = new ArrayList<>();
                 List<Integer> favouriteItemList = new ArrayList<>();
                 List<CartResponseModel> cartItemList = new ArrayList<>();
+                List<AddressModel> addressList = new ArrayList<>();
                 int userId = checkRegisters();
                 sharedPreference.setRegisteredUsersCount(userId);
 //                sharedPreference.setPresentUserId(userId);
-                UserModel user = new UserModel(userId, name, email, password, favouriteItemList, cartItemList);
+                UserModel user = new UserModel(userId, name, email, password, favouriteItemList, cartItemList, addressList);
                 userList.add(user);
                 if (file.exists()){
                     ArrayList<UserModel>  userList1 = mapper.readValue(new File(getActivity().getFilesDir(),

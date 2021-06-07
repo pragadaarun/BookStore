@@ -22,4 +22,14 @@
     <string name="book_price">Book Price</string>
     <string name="add_to_cart">Add_To_Cart</string>
     <string name="item_quantities">Items</string>
+    <string name="buy_button">Place Order</string>
+    <string name="total_price">Total Price</string>
+    <string name="rupees">Rs.</string>
+    <string name="submit">Submit</string>
+    <string name="pincode">PinCode</string>
+    <string name="city">City</string>
+    <string name="street">Street</string>
+    <string name="houseno">HouseNo</string>
+    <string name="state">State</string>
+    <string name="mobile">Mobile</string>
 </resources>
