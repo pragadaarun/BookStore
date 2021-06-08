@@ -98,7 +98,7 @@ public class RegisterFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
             return;
 
-        } else  if (!(email.isEmpty() && password.isEmpty())){
+        } else  if (!(email.isEmpty() && password.isEmpty() && name.isEmpty() && confirmPassword.isEmpty())){
             try{
                 File file = new File(getActivity().getFilesDir(), "users.json");
                 ObjectMapper mapper = new ObjectMapper();
@@ -189,7 +189,7 @@ public class RegisterFragment extends Fragment {
             userPassword.setError("Please enter Valid password");
             userPassword.requestFocus();
             return false;
-        } else if (!(password.equals(confirmPassword) && confirmPassword.isEmpty())) {
+        } else if (!(password.equals(confirmPassword))) {
             verifyPassword.setError("Password not Matches");
             verifyPassword.requestFocus();
             return false;

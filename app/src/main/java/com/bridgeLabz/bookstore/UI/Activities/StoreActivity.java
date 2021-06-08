@@ -2,6 +2,7 @@ package com.bridgeLabz.bookstore.UI.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class StoreActivity extends AppCompatActivity {
     private BooksListFragment booksListFragment;
     private FavouriteFragment favouriteFragment;
     private CartFragment cartFragment;
+    Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,8 @@ public class StoreActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.store_menu, menu);
         MenuItem logout = menu.findItem(R.id.sign_out);
-        MenuItem wishList = menu.findItem(R.id.favourite);
-        MenuItem cartList = menu.findItem(R.id.cart);
+        MenuItem favourite = menu.findItem(R.id.favourite);
+        MenuItem cart = menu.findItem(R.id.cart);
         logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -55,25 +57,30 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-        wishList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        favourite.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
-                        favouriteFragment).addToBackStack(null).commit();
+                fragment = favouriteFragment;
+                fragmentCall(fragment);
                 return false;
             }
         });
 
-        cartList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        cart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
-                        cartFragment).addToBackStack(null).commit();
+                fragment = cartFragment;
+                fragmentCall(fragment);
                 return false;
             }
         });
         return true;
+    }
+
+    private void fragmentCall(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
+                fragment).addToBackStack(null).commit();
     }
 }

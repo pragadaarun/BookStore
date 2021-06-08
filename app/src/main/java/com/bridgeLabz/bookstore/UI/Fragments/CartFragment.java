@@ -1,6 +1,8 @@
 package com.bridgeLabz.bookstore.UI.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.CartAdapter;
+import com.bridgeLabz.bookstore.helper.CartBookClickListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +46,9 @@ public class CartFragment extends Fragment {
     private Button cartBuyButton;
     private TextView cartTotalPrice;
     SharedPreference sharedPreference;
+    private float totalPrice;
+    private Fragment fragment;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class CartFragment extends Fragment {
         List<CartModel> cartItemBooks = cartRepository.getCartList();
         cartBuyButton = view.findViewById(R.id.cart_buy_button);
         cartTotalPrice = view.findViewById(R.id.cart_total_price);
+        totalPrice = calculateTotalPrice(cartItemBooks);
+        cartTotalPrice.setText(String.valueOf(totalPrice));
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
@@ -71,7 +79,40 @@ public class CartFragment extends Fragment {
         cartRecyclerView = view.findViewById(R.id.cart_RecyclerView);
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setHasFixedSize(true);
-        cartAdapter = new CartAdapter(cartItemBooks);
+        cartAdapter = new CartAdapter(cartItemBooks, new CartBookClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onAddItemQuantity(CartModel cart) {
+                cartRepository.updateCart(cart);
+                totalPrice = calculateTotalPrice(cartAdapter.getCartBooksList());
+                cartTotalPrice.setText(String.valueOf(totalPrice));
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onMinusItemQuantity(CartModel cart, int position) {
+                if(cart.getItemQuantities() == 0){
+                    cartRepository.removeCart(cart);
+                    List<CartModel> updateCartItemBooks = cartRepository.getCartList();
+                    cartAdapter.setCartBooksList(updateCartItemBooks);
+                    cartAdapter.notifyItemRemoved(position);
+                } else{
+                    totalPrice = calculateTotalPrice(cartRepository.getCartList());
+                    cartTotalPrice.setText(String.valueOf(totalPrice));
+                }
+
+            }
+
+            @Override
+            public void onBookImageClick(BookModel book, int position) {
+                int bookId = cartAdapter.getItem(position).getBookId();
+                fragment = new BookFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("BookID", bookId);
+                fragment.setArguments(bundle);
+                fragmentCall();
+            }
+        });
         cartRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
         onBackPressed(view);
@@ -80,27 +121,38 @@ public class CartFragment extends Fragment {
         return view;
     }
 
+    private float calculateTotalPrice(List<CartModel> cartList) {
+        float totalPrice = 0.0f;
+        for(CartModel cart : cartList){
+            totalPrice = totalPrice + cart.getBook().getPrice() * cart.getItemQuantities();
+        }
+        return totalPrice;
+    }
+
     private void buyBooks() {
-        cartBuyButton.setOnClickListener(v -> {
-            ObjectMapper mapper = new ObjectMapper();
-            List<UserModel> userList1 = null;
-            try {
-                userList1 = mapper.readValue(new File(getContext().getFilesDir(),
-                        "Users.json"), new TypeReference<List<UserModel>>(){});
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            List<AddressModel> userAddress = userList1.get(sharedPreference.getPresentUserId()).getAddressList();
-            Fragment fragment;
-            if(userAddress.size() == 0){
-                fragment = new AddressFragment();
-            }else{
-                fragment = new AddressEditFragment();
-            }
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.home_fragment_container, fragment)
-                    .addToBackStack(null).commit();
-        });
+        if (cartRepository.getCartList().size() == 0){
+            cartBuyButton.setEnabled(false);
+        } else {
+            cartBuyButton.setEnabled(true);
+            cartBuyButton.setOnClickListener(v -> {
+                ObjectMapper mapper = new ObjectMapper();
+                List<UserModel> userList1 = null;
+                try {
+                    userList1 = mapper.readValue(new File(getContext().getFilesDir(),
+                            "users.json"), new TypeReference<List<UserModel>>() {
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                List<AddressModel> userAddress = userList1.get(sharedPreference.getPresentUserId()).getAddressList();
+                if (userAddress.size() == 0) {
+                    fragment = new AddressFragment();
+                } else {
+                    fragment = new AddressEditFragment();
+                }
+                fragmentCall();
+            });
+        }
     }
 
     private void onBackPressed(View view) {
@@ -116,6 +168,12 @@ public class CartFragment extends Fragment {
 
             }
         });
+    }
+
+    public void fragmentCall() {
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.home_fragment_container, fragment)
+                .addToBackStack(null).commit();
     }
 
     public void onResume() {
