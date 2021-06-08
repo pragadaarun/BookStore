@@ -13,13 +13,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.UserRepository;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
+import com.bridgeLabz.bookstore.helper.SharedPreference;
 
+import java.io.File;
 import java.util.Objects;
 
 public class PurchasedFragment extends Fragment {
 
         private TextView orderId;
         private Button continueShopping;
+        UserRepository userRepository;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,8 +33,11 @@ public class PurchasedFragment extends Fragment {
             View view = inflater.inflate(R.layout.fragment_purchased, container, false);
             orderId = view.findViewById(R.id.order_id_display);
             continueShopping = view.findViewById(R.id.continue_shopping_button);
-
+            File userListFile = new File(getContext().getFilesDir(), "users.json");
+            BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+            userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
             long orderNo = System.currentTimeMillis();
+            createOrderList(orderNo);
             orderId.setText(String.valueOf(orderNo) );
             continueShopping.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -41,7 +49,11 @@ public class PurchasedFragment extends Fragment {
             return view;
         }
 
-        private void onBackPressed(View view) {
+    private void createOrderList(long orderNo) {
+            userRepository.addOrdersList(orderNo);
+    }
+
+    private void onBackPressed(View view) {
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.purchased_toolbar);
             toolbar.setTitle("Cart List");

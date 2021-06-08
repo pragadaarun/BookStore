@@ -17,8 +17,12 @@ import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
+import com.bridgeLabz.bookstore.Repository.UserRepository;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
+import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.bumptech.glide.Glide;
 
+import java.io.File;
 import java.util.Objects;
 
 public class BookFragment extends Fragment {
@@ -27,7 +31,7 @@ public class BookFragment extends Fragment {
     private TextView bookTitle, bookAuthor;
     private Button addToCart;
     BookRepository bookRepository;
-    CartRepository cartRepository;
+    UserRepository userRepository;
     private int bookID;
 
     @Override
@@ -35,7 +39,11 @@ public class BookFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book, container, false);
-        cartRepository = new CartRepository(getContext());
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
+        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
+
         bookID = getArguments().getInt("BookID");
         findViews(view);
         setViews();
@@ -52,7 +60,6 @@ public class BookFragment extends Fragment {
     }
 
     private void setViews() {
-        bookRepository = new BookRepository(getContext());
         BookModel book = bookRepository.getBook(bookID);
         String imageUri = book.getBookImage();
         Glide.with(getContext())

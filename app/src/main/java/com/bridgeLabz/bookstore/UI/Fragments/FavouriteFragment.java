@@ -19,8 +19,13 @@ import android.widget.Toast;
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.SharedPreference;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,6 +35,7 @@ public class FavouriteFragment extends Fragment {
     private static final String TAG = "FavouriteFragment";
     private RecyclerView recyclerView;
     private int spanCount;
+    UserRepository userRepository;
     private BookRepository bookRepository;
 
     @Nullable
@@ -37,7 +43,10 @@ public class FavouriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
-        bookRepository = new BookRepository(getContext());
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
+        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
         ArrayList<BookModel> favourites = bookRepository.getFavoriteBooks();
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {

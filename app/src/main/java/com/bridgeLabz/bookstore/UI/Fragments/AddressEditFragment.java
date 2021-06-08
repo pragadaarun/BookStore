@@ -15,9 +15,12 @@ import android.widget.EditText;
 import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,8 +37,9 @@ public class AddressEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_address_edit, container, false);
         sharedPreference = new SharedPreference(getContext());
-        userRepository = new UserRepository(getContext());
-
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
         houseNO = view.findViewById(R.id.address_house_no);
         street = view.findViewById(R.id.address_street);
         city = view.findViewById(R.id.address_city);

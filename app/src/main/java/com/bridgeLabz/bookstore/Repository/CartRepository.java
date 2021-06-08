@@ -8,6 +8,7 @@ import com.bridgeLabz.bookstore.Model.BookResponseModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,16 +22,14 @@ import java.util.List;
 public class CartRepository {
 
     private static final String TAG = "CartRepository";
-    private Context context;
-    private SharedPreference sharedPreference;
     private BookRepository bookRepository;
     private UserRepository userRepository;
+    private File file;
 
-    public CartRepository(Context context) {
-        this.context = context;
-        sharedPreference = new SharedPreference(context);
-        bookRepository = new BookRepository(context);
-        userRepository = new UserRepository(context);
+    public CartRepository(File file , UserRepository userRepository, BookAssetLoader bookAssetLoader) {
+        this.file = file;
+        bookRepository = new BookRepository(file, userRepository, bookAssetLoader);
+        this.userRepository = userRepository;
     }
 
     public List<CartModel> getCartList() {
@@ -93,5 +92,13 @@ public class CartRepository {
             bookIds.add(bookModel.getBookId());
         }
         return bookIds;
+    }
+
+    public float calculateTotalPrice(List<CartModel> cartList) {
+        float totalPrice = 0.0f;
+        for(CartModel cart : cartList){
+            totalPrice = totalPrice + cart.getBook().getPrice() * cart.getItemQuantities();
+        }
+        return totalPrice;
     }
 }

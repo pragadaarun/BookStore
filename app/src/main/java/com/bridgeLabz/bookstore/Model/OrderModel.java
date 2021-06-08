@@ -5,14 +5,25 @@ import java.util.List;
 
 public class OrderModel {
 
-    private int orderId;
+    private long orderId;
     private float orderTotal;
+    private List<CartResponseModel> cartModelList;
 
-    public int getOrderId() {
+    public OrderModel() {
+
+    }
+
+    public OrderModel(long orderId, float orderTotal, List<CartResponseModel> cartModelList) {
+        this.orderId = orderId;
+        this.orderTotal = orderTotal;
+        this.cartModelList = cartModelList;
+    }
+
+    public long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 
@@ -32,13 +43,6 @@ public class OrderModel {
         this.cartModelList = cartModelList;
     }
 
-    public OrderModel(int orderId, float orderTotal, List<CartResponseModel> cartModelList) {
-        this.orderId = orderId;
-        this.orderTotal = orderTotal;
-        this.cartModelList = cartModelList;
-    }
-
-    private List<CartResponseModel> cartModelList;
 
     //    orderId : Int
 //    orderTotal : Double

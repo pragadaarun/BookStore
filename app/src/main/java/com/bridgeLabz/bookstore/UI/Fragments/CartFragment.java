@@ -26,6 +26,7 @@ import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.CartAdapter;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.CartBookClickListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -51,7 +52,6 @@ public class CartFragment extends Fragment {
     private float totalPrice;
     private Fragment fragment;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,13 +61,15 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        cartRepository = new CartRepository(getContext());
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         sharedPreference = new SharedPreference(getContext());
-        userRepository = new UserRepository(getContext());
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
+        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader);
         List<CartModel> cartItemBooks = cartRepository.getCartList();
         cartBuyButton = view.findViewById(R.id.cart_buy_button);
         cartTotalPrice = view.findViewById(R.id.cart_total_price);
-        totalPrice = calculateTotalPrice(cartItemBooks);
+        totalPrice = cartRepository.calculateTotalPrice(cartItemBooks);
         cartTotalPrice.setText(String.valueOf(totalPrice));
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -87,7 +89,8 @@ public class CartFragment extends Fragment {
             @Override
             public void onAddItemQuantity(CartModel cart) {
                 cartRepository.updateCart(cart);
-                totalPrice = calculateTotalPrice(cartAdapter.getCartBooksList());
+                cartAdapter.setCartBooksList(cartRepository.getCartList());
+                totalPrice = cartRepository.calculateTotalPrice(cartAdapter.getCartBooksList());
                 cartTotalPrice.setText(String.valueOf(totalPrice));
             }
 
@@ -96,11 +99,10 @@ public class CartFragment extends Fragment {
             public void onMinusItemQuantity(CartModel cart, int position) {
                 if(cart.getItemQuantities() == 0){
                     cartRepository.removeCart(cart);
-                    List<CartModel> updateCartItemBooks = cartRepository.getCartList();
-                    cartAdapter.setCartBooksList(updateCartItemBooks);
-                    cartAdapter.notifyItemRemoved(position);
+                    cartAdapter.setCartBooksList(cartRepository.getCartList());
+                    cartAdapter.notifyDataSetChanged();
                 } else{
-                    totalPrice = calculateTotalPrice(cartRepository.getCartList());
+                    totalPrice = cartRepository.calculateTotalPrice(cartRepository.getCartList());
                     cartTotalPrice.setText(String.valueOf(totalPrice));
                 }
 
@@ -122,14 +124,6 @@ public class CartFragment extends Fragment {
         buyBooks();
 
         return view;
-    }
-
-    private float calculateTotalPrice(List<CartModel> cartList) {
-        float totalPrice = 0.0f;
-        for(CartModel cart : cartList){
-            totalPrice = totalPrice + cart.getBook().getPrice() * cart.getItemQuantities();
-        }
-        return totalPrice;
     }
 
     private void buyBooks() {

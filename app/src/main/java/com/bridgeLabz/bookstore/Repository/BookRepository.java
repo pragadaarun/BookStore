@@ -1,13 +1,12 @@
 package com.bridgeLabz.bookstore.Repository;
 
-import android.content.Context;
 import android.util.Log;
-
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.BookResponseModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,37 +20,20 @@ import java.util.List;
 
 public class BookRepository {
 
-    private Context context;
+    private File file;
     private static final String TAG = "BookRepository";
-    private SharedPreference sharedPreference;
     private UserRepository userRepository;
+    private BookAssetLoader bookAssetLoader;
 
-    public BookRepository(Context context) {
-        this.context = context;
-        sharedPreference = new SharedPreference(context);
-        userRepository =  new UserRepository(context);
-    }
-
-    public String loadBookJSON() {
-        String json = null;
-        try {
-            InputStream is = context.getAssets().open("books.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        Log.e(TAG, "loadJSONFromAsset: " + json);
-        return json;
+    public BookRepository(File file, UserRepository userRepository, BookAssetLoader bookAssetLoader) {
+        this.file = file;
+        this.userRepository = userRepository;
+        this.bookAssetLoader = bookAssetLoader;
     }
 
     public ArrayList<BookModel> getBookList() {
         ArrayList<BookModel> bookList = new ArrayList<>();
-        String data = loadBookJSON();
+        String data = bookAssetLoader.loadBookJSON();
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<BookResponseModel> bookResponseModels = null;
         try {

@@ -18,7 +18,9 @@ import com.bridgeLabz.bookstore.Model.BookResponseModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,6 +41,7 @@ public class BooksListFragment extends Fragment {
     private int spanCount;
     BookFragment bookFragment;
     private BookRepository bookRepository;
+    private UserRepository userRepository;
 
     @Nullable
     @Override
@@ -46,7 +49,10 @@ public class BooksListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
         int orientation = getResources().getConfiguration().orientation;
-        bookRepository = new BookRepository(getContext());
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
+        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             spanCount = 2;
