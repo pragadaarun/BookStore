@@ -35,7 +35,7 @@ public class CartRepository {
 
     public List<CartModel> getCartList() {
         List<CartModel> cartList = new ArrayList<>();
-        UserModel user = bookRepository.getLoggedInUser();
+        UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
         Log.e(TAG, "cartBookIds: " + userCartItemList);
 
@@ -53,7 +53,7 @@ public class CartRepository {
 
     public void updateCart(CartModel cart) {
         List<UserModel> userList = userRepository.getUsersList();
-        UserModel user = bookRepository.getLoggedInUser();
+        UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
         ArrayList<BookModel> bookList = bookRepository.getBookList();
         ArrayList<Integer> bookIds = getBookIds(bookList);
@@ -72,7 +72,7 @@ public class CartRepository {
     public void removeCart(CartModel cart) {
 
         List<UserModel> usersList = userRepository.getUsersList();
-        UserModel user = bookRepository.getLoggedInUser();
+        UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
         ArrayList<BookModel> bookList = bookRepository.getBookList();
         ArrayList<Integer> bookIds = getBookIds(bookList);

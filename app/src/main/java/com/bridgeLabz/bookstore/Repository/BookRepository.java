@@ -24,10 +24,12 @@ public class BookRepository {
     private Context context;
     private static final String TAG = "BookRepository";
     private SharedPreference sharedPreference;
+    private UserRepository userRepository;
 
     public BookRepository(Context context) {
         this.context = context;
         sharedPreference = new SharedPreference(context);
+        userRepository =  new UserRepository(context);
     }
 
     public String loadBookJSON() {
@@ -55,7 +57,7 @@ public class BookRepository {
         try {
             bookResponseModels = mapper.readValue(data, new TypeReference<List<BookResponseModel>>() {
             });
-            UserModel user = getLoggedInUser();
+            UserModel user = userRepository.getLoggedInUser();
             List<Integer> favoriteBookIds = user.getFavouriteItemsList();
             for (BookResponseModel bookResponseModel : bookResponseModels) {
                 BookModel favouriteBook = new BookModel(bookResponseModel);
@@ -67,24 +69,6 @@ public class BookRepository {
             e.printStackTrace();
         }
         return bookList;
-    }
-
-    public UserModel getLoggedInUser() {
-        try{
-            ObjectMapper mapper = new ObjectMapper();
-            List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
-                    "users.json"), new TypeReference<List<UserModel>>() {
-            });
-            for (UserModel user : userList) {
-                if (user.getUserId() == sharedPreference.getPresentUserId()) {
-                    return user;
-                }
-            }
-        } catch(IOException jsonException){
-            jsonException.printStackTrace();
-        }
-
-        return null;
     }
 
     public ArrayList<BookModel> getFavoriteBooks() {
@@ -108,22 +92,14 @@ public class BookRepository {
     }
 
     public void addBookToCart(int bookID) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
-                    "users.json"), new TypeReference<List<UserModel>>(){});
-            UserModel user = getLoggedInUser();
+
+            List<UserModel> userList = userRepository.getUsersList();
+            UserModel user = userRepository.getLoggedInUser();
             CartResponseModel cart = new CartResponseModel(bookID, 1);
             List<CartResponseModel> cartItemList = user.getCartItemList();
             cartItemList.add(cart);
             userList.get(user.getUserId()).setCartItemList(cartItemList);
-            String updatedFile = mapper.writeValueAsString(userList);
-            FileOutputStream fos = context.openFileOutput("users.json", Context.MODE_PRIVATE);
-            fos.write(updatedFile.getBytes());
-            fos.close();
-        } catch (IOException jsonParseException) {
-            jsonParseException.printStackTrace();
-        }
+            userRepository.writeUsersList(userList);
     }
 
 }

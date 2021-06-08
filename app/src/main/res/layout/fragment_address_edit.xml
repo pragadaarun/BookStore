@@ -8,7 +8,7 @@
     tools:context=".UI.Fragments.AddressEditFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/address_toolbar"
+        android:id="@+id/address_edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="#8C00"

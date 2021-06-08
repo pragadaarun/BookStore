@@ -50,4 +50,21 @@ public class UserRepository {
         }
     }
 
+    public UserModel getLoggedInUser() {
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            List<UserModel> userList = mapper.readValue(new File(context.getFilesDir(),
+                    "users.json"), new TypeReference<List<UserModel>>() {
+            });
+            for (UserModel user : userList) {
+                if (user.getUserId() == sharedPreference.getPresentUserId()) {
+                    return user;
+                }
+            }
+        } catch(IOException jsonException){
+            jsonException.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -33,4 +33,8 @@
     <string name="state">State</string>
     <string name="mobile">Mobile</string>
     <string name="Rs">\u20B9</string>
+    <string name="order_placed">Order Placed !</string>
+    <string name="orderid">OrderID</string>
+    <string name="continue_shopping">Continue Shopping?</string>
+    <string name="order">order</string>
 </resources>
