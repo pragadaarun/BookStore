@@ -44,7 +44,7 @@ public class BookFragment extends Fragment {
         userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
         bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
 
-        bookID = getArguments().getInt("BookID");
+        bookID = getArguments().getInt("BookId");
         findViews(view);
         setViews();
         setClickListeners();

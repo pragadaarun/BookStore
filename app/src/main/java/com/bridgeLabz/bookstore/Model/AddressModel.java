@@ -10,6 +10,10 @@ public class AddressModel {
     private String pinCode;
     private String mobile;
 
+    public AddressModel(){
+
+    }
+
     public AddressModel(long addressId, String houseNo, String street, String city, String state, String pinCode, String mobile) {
         this.addressId = addressId;
         this.houseNo = houseNo;

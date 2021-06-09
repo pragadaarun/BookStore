@@ -8,6 +8,7 @@ import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class UserRepository {
     }
 
     public UserModel getLoggedInUser() {
-        try{
+        try {
             ObjectMapper mapper = new ObjectMapper();
             List<UserModel> userList = mapper.readValue(userListFile, new TypeReference<List<UserModel>>() {
             });
@@ -57,7 +58,7 @@ public class UserRepository {
                     return user;
                 }
             }
-        } catch(IOException jsonException){
+        } catch (IOException jsonException) {
             jsonException.printStackTrace();
         }
         return null;
@@ -79,4 +80,11 @@ public class UserRepository {
         usersList.get(user.getUserId()).setCartItemList(newCartItemList);
         writeUsersList(usersList);
     }
+
+    public List<OrderModel> getAllOrders() {
+
+        List<UserModel> usersList = getUsersList();
+        return usersList.get(sharedPreference.getPresentUserId()).getOrdersList();
+    }
+
 }

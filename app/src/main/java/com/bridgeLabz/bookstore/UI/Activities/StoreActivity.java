@@ -14,6 +14,7 @@ import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.UI.Fragments.BooksListFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.CartFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.FavouriteFragment;
+import com.bridgeLabz.bookstore.UI.Fragments.OrdersFragment;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
 public class StoreActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class StoreActivity extends AppCompatActivity {
     private BooksListFragment booksListFragment;
     private FavouriteFragment favouriteFragment;
     private CartFragment cartFragment;
+    private OrdersFragment ordersFragment;
     Fragment fragment;
 
     @Override
@@ -32,6 +34,7 @@ public class StoreActivity extends AppCompatActivity {
         booksListFragment = new BooksListFragment();
         favouriteFragment = new FavouriteFragment();
         cartFragment = new CartFragment();
+        ordersFragment = new OrdersFragment();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
@@ -46,6 +49,7 @@ public class StoreActivity extends AppCompatActivity {
         inflater.inflate(R.menu.store_menu, menu);
         MenuItem logout = menu.findItem(R.id.sign_out);
         MenuItem favourite = menu.findItem(R.id.favourite);
+        MenuItem orders = menu.findItem(R.id.orders);
         MenuItem cart = menu.findItem(R.id.cart);
         logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -72,6 +76,15 @@ public class StoreActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
 
                 fragment = cartFragment;
+                fragmentCall(fragment);
+                return false;
+            }
+        });
+
+        orders.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fragment = ordersFragment;
                 fragmentCall(fragment);
                 return false;
             }

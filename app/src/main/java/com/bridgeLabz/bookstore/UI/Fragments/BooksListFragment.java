@@ -79,7 +79,7 @@ public class BooksListFragment extends Fragment {
                 bookFragment = new BookFragment();
                 Bundle bundle = new Bundle();
 
-                bundle.putInt("BookID", bookId);
+                bundle.putInt("BookId", bookId);
 
                 bookFragment.setArguments(bundle);
 

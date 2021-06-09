@@ -36,16 +36,11 @@
         android:id="@+id/order_id_display"
         android:layout_width="112dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="22dp"
-        android:layout_marginEnd="29dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
-        android:text="@string/orderid"
+        android:text="@string/orderId"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/order__items_display"
-        app:layout_constraintEnd_toStartOf="@+id/order__items_display"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_success_display" />
 
@@ -61,22 +56,6 @@
         app:layout_constraintHorizontal_bias="0.754"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_id_display" />
-
-    <TextView
-        android:id="@+id/order__items_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center"
-        android:text="@string/order"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/continue_shopping_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_id_display"
-        app:layout_constraintVertical_bias="0.916" />
 
     <ImageView
         android:id="@+id/imageView3"

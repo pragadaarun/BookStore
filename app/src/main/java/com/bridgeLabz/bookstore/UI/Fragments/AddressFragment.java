@@ -18,9 +18,11 @@ import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.AddressAdapter;
+import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.OnAddressListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +40,9 @@ public class AddressFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
         final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         sharedPreference = new SharedPreference(getContext());
+        File userListFile = new File(getContext().getFilesDir(), "users.json");
+        BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
         UserModel user = userRepository.getLoggedInUser();
         List<AddressModel> userAddressList = user.getAddressList();
 

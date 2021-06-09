@@ -24,7 +24,7 @@ public class PurchasedFragment extends Fragment {
 
         private TextView orderId;
         private Button continueShopping;
-        UserRepository userRepository;
+        private UserRepository userRepository;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +42,7 @@ public class PurchasedFragment extends Fragment {
             continueShopping.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDestroy();
+                    getParentFragmentManager().popBackStack();
                 }
             });
             onBackPressed(view);
@@ -61,7 +61,7 @@ public class PurchasedFragment extends Fragment {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDestroy();
+                    getParentFragmentManager().popBackStack();
                 }
             });
         }

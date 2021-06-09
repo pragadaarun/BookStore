@@ -50,36 +50,39 @@ public class CartRepository {
         return cartList;
     }
 
-    public void updateCart(CartModel cart) {
+    public void updateCart(int bookId) {
         List<UserModel> userList = userRepository.getUsersList();
         UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
         ArrayList<BookModel> bookList = bookRepository.getBookList();
         ArrayList<Integer> bookIds = getBookIds(bookList);
-        for (CartResponseModel cartResponseModel : userCartItemList) {
-            int bookIndex = bookIds.indexOf(cartResponseModel.getBookId());
-            if (bookIndex == cart.getBook().getBookId()) {
-                cartResponseModel.setItemQuantities(cart.getItemQuantities());
-                userCartItemList.add(cartResponseModel);
-                break;
+        for (int i =0; i < userCartItemList.size(); i++) {
+            CartResponseModel model = userCartItemList.get(i);
+            if( model.getBookId() == bookId) {
+                int currentQuantity =  model.getItemQuantities();
+                model.setItemQuantities(currentQuantity + 1);
+                userCartItemList.add(model);
             }
         }
         userList.get(user.getUserId()).setCartItemList(userCartItemList);
         userRepository.writeUsersList(userList);
     }
 
-    public void removeCart(CartModel cart) {
+    public void removeCart(int bookId) {
 
         List<UserModel> usersList = userRepository.getUsersList();
         UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
-        ArrayList<BookModel> bookList = bookRepository.getBookList();
-        ArrayList<Integer> bookIds = getBookIds(bookList);
-        for (CartResponseModel cartResponseModel : userCartItemList) {
-            int bookIndex = bookIds.indexOf(cartResponseModel.getBookId());
-            if (bookIndex == cart.getBook().getBookId()) {
-                userCartItemList.remove(cartResponseModel);
-                break;
+        for (int i =0; i < userCartItemList.size(); i++) {
+            CartResponseModel model = userCartItemList.get(i);
+            if( model.getBookId() == bookId) {
+                int currentQuantity =  model.getItemQuantities();
+                if (currentQuantity < 2) {
+                    userCartItemList.remove(model);
+                } else {
+                    model.setItemQuantities(currentQuantity - 1);
+                    userCartItemList.add(model);
+                }
             }
         }
         usersList.get(user.getUserId()).setCartItemList(userCartItemList);

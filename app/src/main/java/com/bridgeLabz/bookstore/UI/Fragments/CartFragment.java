@@ -85,27 +85,17 @@ public class CartFragment extends Fragment {
         cartRecyclerView.setLayoutManager(layoutManager);
         cartRecyclerView.setHasFixedSize(true);
         cartAdapter = new CartAdapter(cartItemBooks, new CartBookClickListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onAddItemQuantity(CartModel cart) {
-                cartRepository.updateCart(cart);
-                cartAdapter.setCartBooksList(cartRepository.getCartList());
-                totalPrice = cartRepository.calculateTotalPrice(cartAdapter.getCartBooksList());
+                totalPrice = cartRepository.calculateTotalPrice(cartItemBooks);
                 cartTotalPrice.setText(String.valueOf(totalPrice));
             }
 
-            @SuppressLint("SetTextI18n")
             @Override
             public void onMinusItemQuantity(CartModel cart, int position) {
-                if(cart.getItemQuantities() == 0){
-                    cartRepository.removeCart(cart);
-                    cartAdapter.setCartBooksList(cartRepository.getCartList());
-                    cartAdapter.notifyDataSetChanged();
-                } else{
-                    totalPrice = cartRepository.calculateTotalPrice(cartRepository.getCartList());
-                    cartTotalPrice.setText(String.valueOf(totalPrice));
-                }
-
+                cartAdapter.notifyDataSetChanged();
+                totalPrice = cartRepository.calculateTotalPrice(cartItemBooks);
+                cartTotalPrice.setText(String.valueOf(totalPrice));
             }
 
             @Override
@@ -113,7 +103,7 @@ public class CartFragment extends Fragment {
                 int bookId = cartAdapter.getItem(position).getBookId();
                 fragment = new BookFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("BookID", bookId);
+                bundle.putInt("BookId", bookId);
                 fragment.setArguments(bundle);
                 fragmentCall();
             }
@@ -127,12 +117,12 @@ public class CartFragment extends Fragment {
     }
 
     private void buyBooks() {
-        if (cartRepository.getCartList().size() == 0){
+        if (cartRepository.getCartList().size() == 0) {
             cartBuyButton.setEnabled(false);
         } else {
             cartBuyButton.setEnabled(true);
             cartBuyButton.setOnClickListener(v -> {
-                List<UserModel> usersList =userRepository.getUsersList();
+                List<UserModel> usersList = userRepository.getUsersList();
                 List<AddressModel> userAddress = usersList.get(sharedPreference.getPresentUserId()).getAddressList();
                 if (userAddress.size() == 0) {
                     fragment = new AddressEditFragment();
@@ -169,6 +159,7 @@ public class CartFragment extends Fragment {
         super.onResume();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
     }
+
     @Override
     public void onStop() {
         super.onStop();

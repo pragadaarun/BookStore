@@ -78,7 +78,6 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
     }
 
     private float displayPrices(int itemCount) {
-        cart.setItemQuantities(itemCount);
         itemCountDisplay.setText(String.valueOf(itemCount));
         bookPrice = cart.getBook().getPrice() * itemCount;
         return bookPrice;
