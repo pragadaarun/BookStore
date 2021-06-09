@@ -87,4 +87,16 @@ public class UserRepository {
         return usersList.get(sharedPreference.getPresentUserId()).getOrdersList();
     }
 
+    public boolean isCarted(int bookId){
+        UserModel user = getLoggedInUser();
+        List<CartResponseModel> userCartItemList = user.getCartItemList();
+        boolean isCarted = true;
+        for(CartResponseModel cart : userCartItemList){
+            if (bookId == cart.getBookId()) {
+                isCarted = false;
+                break;
+            }
+        }
+        return isCarted;
+    }
 }

@@ -43,7 +43,6 @@ public class BookFragment extends Fragment {
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
         bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
-
         bookID = getArguments().getInt("BookId");
         findViews(view);
         setViews();
@@ -70,6 +69,8 @@ public class BookFragment extends Fragment {
     }
 
     private void setClickListeners() {
+        boolean isCarted = userRepository.isCarted(bookID);
+        addToCart.setEnabled(isCarted);
         addToCart.setOnClickListener(v -> {
             bookRepository.addBookToCart(bookID);
             addToCart.setEnabled(false);
