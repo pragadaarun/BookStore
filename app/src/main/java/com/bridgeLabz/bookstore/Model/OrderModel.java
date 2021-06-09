@@ -1,6 +1,5 @@
 package com.bridgeLabz.bookstore.Model;
 
-import java.util.Date;
 import java.util.List;
 
 public class OrderModel {
@@ -8,15 +7,17 @@ public class OrderModel {
     private long orderId;
     private float orderTotal;
     private List<CartResponseModel> cartModelList;
+    private String orderDate;
 
     public OrderModel() {
 
     }
 
-    public OrderModel(long orderId, float orderTotal, List<CartResponseModel> cartModelList) {
+    public OrderModel(long orderId, float orderTotal, List<CartResponseModel> cartModelList, String orderDate) {
         this.orderId = orderId;
         this.orderTotal = orderTotal;
         this.cartModelList = cartModelList;
+        this.orderDate = orderDate;
     }
 
     public long getOrderId() {
@@ -41,6 +42,14 @@ public class OrderModel {
 
     public void setCartModelList(List<CartResponseModel> cartModelList) {
         this.cartModelList = cartModelList;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
 
