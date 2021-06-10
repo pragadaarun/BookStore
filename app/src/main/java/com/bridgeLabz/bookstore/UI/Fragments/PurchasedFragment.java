@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
+import com.bridgeLabz.bookstore.helper.MyWorker;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
 import java.io.File;
@@ -37,7 +41,7 @@ public class PurchasedFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_purchased, container, false);
         orderId = view.findViewById(R.id.order_id_display);
-        dateDisplay = view.findViewById(R.id.purchased_date_diaply);
+        dateDisplay = view.findViewById(R.id.purchased_date_display);
         continueShopping = view.findViewById(R.id.continue_shopping_button);
         File userListFile = new File(getContext().getFilesDir(), "users.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
@@ -49,6 +53,16 @@ public class PurchasedFragment extends Fragment {
         dateDisplay.setText(date);
         createOrderList(orderNo, date);
         orderId.setText(String.valueOf(orderNo));
+        final OneTimeWorkRequest.Builder workRequest =
+                new OneTimeWorkRequest.Builder(MyWorker.class);
+        Data.Builder data = new Data.Builder();
+        data.putString(MyWorker.NOTIFICATION_CHANNEL_ID, "order");
+        data.putString(MyWorker.NOTIFICATION_CHANNEL, "ORDERS");
+        data.putString(MyWorker.NOTIFICATION_TITLE, "Order Placed Success");
+        data.putString(MyWorker.NOTIFICATION_MESSAGE, "Track the Order with Order Id : " + orderId );
+        workRequest.setInputData(data.build());
+        WorkManager.getInstance(getContext()).enqueue(workRequest.build());
+
         continueShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +85,7 @@ public class PurchasedFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requireActivity().onBackPressed();
+                onStop();
             }
         });
     }
@@ -84,6 +98,7 @@ public class PurchasedFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        requireActivity().onBackPressed();
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
     }
 }

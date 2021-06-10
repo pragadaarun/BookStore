@@ -52,7 +52,8 @@ public class AddressFragment extends Fragment {
         addressAdapter = new AddressAdapter(userAddressList, new OnAddressListener() {
             @Override
             public void onAddressClick(int position, View viewHolder) {
-                getParentFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new PurchasedFragment()).commit();
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.home_fragment_container, new PurchasedFragment()).addToBackStack(null).commit();
             }
         });
         recyclerView.setAdapter(addressAdapter);

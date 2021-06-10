@@ -6,14 +6,14 @@ public class OrderModel {
 
     private long orderId;
     private float orderTotal;
-    private List<CartResponseModel> cartModelList;
+    private List<CartModel> cartModelList;
     private String orderDate;
 
     public OrderModel() {
 
     }
 
-    public OrderModel(long orderId, float orderTotal, List<CartResponseModel> cartModelList, String orderDate) {
+    public OrderModel(long orderId, float orderTotal, List<CartModel> cartModelList, String orderDate) {
         this.orderId = orderId;
         this.orderTotal = orderTotal;
         this.cartModelList = cartModelList;
@@ -36,11 +36,11 @@ public class OrderModel {
         this.orderTotal = orderTotal;
     }
 
-    public List<CartResponseModel> getCartModelList() {
+    public List<CartModel> getCartModelList() {
         return cartModelList;
     }
 
-    public void setCartModelList(List<CartResponseModel> cartModelList) {
+    public void setCartModelList(List<CartModel> cartModelList) {
         this.cartModelList = cartModelList;
     }
 

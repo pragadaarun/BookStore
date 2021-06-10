@@ -34,12 +34,12 @@
 
     <TextView
         android:id="@+id/order_id_display"
-        android:layout_width="112dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
         android:text="@string/orderId"
-        android:textSize="30sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_success_display" />
@@ -54,25 +54,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.753"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/purchased_date_diaply" />
+        app:layout_constraintTop_toBottomOf="@+id/purchased_date_display" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="80dp"
         android:layout_height="76dp"
-        android:layout_marginEnd="52dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="24dp"
         android:src="@drawable/checked"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/continue_shopping_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/order_id_display"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.54" />
+        app:layout_constraintStart_toEndOf="@+id/purchased_date_display"
+        app:layout_constraintTop_toBottomOf="@+id/order_success_display"
+        app:layout_constraintVertical_bias="0.662" />
 
     <TextView
-        android:id="@+id/purchased_date_diaply"
+        android:id="@+id/purchased_date_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="52dp"

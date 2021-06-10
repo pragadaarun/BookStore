@@ -67,12 +67,11 @@ public class UserRepository {
     public void addOrdersList(long orderNo, String date) {
         List<UserModel> usersList = getUsersList();
         UserModel user = getLoggedInUser();
-        List<CartResponseModel> userCartItemList = user.getCartItemList();
         List<OrderModel> userOrdersList = user.getOrdersList();
         List<CartModel> cartList = cartRepository.getCartList();
         float cartTotalPrice = cartRepository.calculateTotalPrice(cartList);
         //Creating Order list
-        OrderModel order = new OrderModel(orderNo, cartTotalPrice, userCartItemList, date);
+        OrderModel order = new OrderModel(orderNo, cartTotalPrice, cartList, date);
         userOrdersList.add(order);
         usersList.get(user.getUserId()).setOrdersList(userOrdersList);
         //Empty the Cart Items

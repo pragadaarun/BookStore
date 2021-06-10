@@ -60,6 +60,7 @@ public class CartRepository {
             CartResponseModel model = userCartItemList.get(i);
             if( model.getBookId() == bookId) {
                 int currentQuantity =  model.getItemQuantities();
+                userCartItemList.remove(model);
                 model.setItemQuantities(currentQuantity + 1);
                 userCartItemList.add(model);
             }

@@ -87,15 +87,24 @@ public class CartFragment extends Fragment {
         cartAdapter = new CartAdapter(cartItemBooks, new CartBookClickListener() {
             @Override
             public void onAddItemQuantity(CartModel cart) {
-                totalPrice = cartRepository.calculateTotalPrice(cartItemBooks);
+                cartRepository.updateCart(cart.getBook().getBookId());
+                List<CartModel> updatedCart = cartRepository.getCartList();
+                totalPrice = cartRepository.calculateTotalPrice(updatedCart);
                 cartTotalPrice.setText(String.valueOf(totalPrice));
             }
 
             @Override
             public void onMinusItemQuantity(CartModel cart, int position) {
-                cartAdapter.notifyDataSetChanged();
-                totalPrice = cartRepository.calculateTotalPrice(cartItemBooks);
+                cartRepository.removeCart(cart.getBook().getBookId());
+                List<CartModel> updatedCart = cartRepository.getCartList();
+                totalPrice = cartRepository.calculateTotalPrice(updatedCart);
                 cartTotalPrice.setText(String.valueOf(totalPrice));
+                cartAdapter.notifyItemRemoved(position);
+                cartAdapter.setCartBooksList(updatedCart);
+                if(updatedCart.size() == 0){
+                    cartAdapter.notifyDataSetChanged();
+                    cartBuyButton.setEnabled(false);
+                }
             }
 
             @Override

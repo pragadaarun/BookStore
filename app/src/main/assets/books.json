@@ -26,5 +26,19 @@
     "author": "Amitav Ghosh",
     "bookImage": "https://upload.wikimedia.org/wikipedia/en/8/8e/The_Hungry_Tide.jpg",
     "price" : 467.9
+  },
+  {
+    "bookId" : 5,
+    "title": "Later (Hard Case Crime)",
+    "author": "Stephen King",
+    "bookImage": "https://i2.wp.com/www.nerdsandbeyond.com/wp-content/uploads/2020/08/Later-book-cover.jpg?fit=844%2C1445&ssl=1",
+    "price" : 449
+  },
+  {
+    "bookId" : 6,
+    "title": "Aria",
+    "author": "Nazanine Hozar",
+    "bookImage": "https://images-na.ssl-images-amazon.com/images/I/41+IGQE26QL._SX324_BO1,204,203,200_.jpg",
+    "price" : 449
   }
 ]

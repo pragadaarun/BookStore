@@ -25,13 +25,13 @@ public class OrderViewHolder extends RecyclerView.ViewHolder{
 
     @SuppressLint("SetTextI18n")
     public void bind(OrderModel order) {
-        orderID.setText("Rs." + order.getOrderId());
+        orderID.setText(String.valueOf(order.getOrderId()));
         String imageUri = "";
         for(int i=0; i<order.getCartModelList().size(); i++){
-            int bookId =  order.getCartModelList().get(i).getBookId();
+            imageUri =  order.getCartModelList().get(i).getBook().getBookImage();
             break;
         }
-        orderTotalPrice.setText(String.valueOf(order.getOrderTotal()));
+        orderTotalPrice.setText("Rs." + order.getOrderTotal());
         orderDate.setText(order.getOrderDate());
         Glide.with(itemView.getContext())
                 .load(imageUri)
