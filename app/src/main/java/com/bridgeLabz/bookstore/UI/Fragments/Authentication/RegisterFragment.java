@@ -90,16 +90,15 @@ public class RegisterFragment extends Fragment {
         String confirmPassword = verifyPassword.getText().toString();
         String jsonString;
 
-        if (!isValidName(name) && (!isValidEmail(email))
-                && (!isValidPassword(password, confirmPassword))
-                && (name.isEmpty() && email.isEmpty()
-                    && password.isEmpty() && confirmPassword.isEmpty())) {
+        if (!isValidName(name) || (!isValidEmail(email))
+                || (!isValidPassword(password, confirmPassword))
+                || (name.isEmpty() || email.isEmpty()
+                    || password.isEmpty() || confirmPassword.isEmpty())) {
 
             Toast.makeText(getContext(), "Please provide required fields",
                     Toast.LENGTH_SHORT).show();
-            return;
 
-        } else  if (!(email.isEmpty() && password.isEmpty() && name.isEmpty() && confirmPassword.isEmpty())){
+        } else {
             try{
                 File file = new File(getActivity().getFilesDir(), "users.json");
                 ObjectMapper mapper = new ObjectMapper();

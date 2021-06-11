@@ -3,34 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="18dp"
         android:elevation="4dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/teal_200">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/order_book_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
@@ -39,44 +38,54 @@
                 android:id="@+id/order_book_Id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/orderId"
                 android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintBottom_toTopOf="@+id/order_books_price"
                 app:layout_constraintStart_toEndOf="@+id/order_book_image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/order_date_display" />
 
             <TextView
                 android:id="@+id/order_books_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/book_price"
-                android:textSize="24dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/order_book_image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.804"
+                app:layout_constraintHorizontal_bias="0.025"
                 app:layout_constraintStart_toEndOf="@+id/order_book_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.129" />
+                app:layout_constraintTop_toBottomOf="@+id/order_book_Id" />
+
+            <TextView
+                android:id="@+id/order_date_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/order_placed_on"
+                app:layout_constraintBottom_toTopOf="@+id/order_book_Id"
+                app:layout_constraintEnd_toStartOf="@+id/order_date_preview"
+                app:layout_constraintStart_toEndOf="@+id/order_book_image"
+                app:layout_constraintTop_toTopOf="@+id/order_book_image" />
 
             <TextView
                 android:id="@+id/order_date_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.529"
-                app:layout_constraintStart_toEndOf="@+id/order_book_Id"
-                app:layout_constraintTop_toBottomOf="@+id/order_books_price"
-                app:layout_constraintVertical_bias="0.535" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/date"
+                app:layout_constraintBottom_toBottomOf="@+id/order_date_display"
+                app:layout_constraintStart_toEndOf="@+id/order_date_display"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,6 +5,10 @@ public class CartModel {
     private int itemQuantities;
     private BookModel book;
 
+    public CartModel() {
+
+    }
+
     public CartModel(int itemQuantities, BookModel book) {
         this.itemQuantities = itemQuantities;
         this.book = book;

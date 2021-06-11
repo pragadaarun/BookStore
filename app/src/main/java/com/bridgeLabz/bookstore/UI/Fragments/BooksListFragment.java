@@ -39,7 +39,7 @@ public class BooksListFragment extends Fragment {
     private ArrayList<BookModel> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private int spanCount;
-    BookFragment bookFragment;
+    private BookFragment bookFragment;
     private BookRepository bookRepository;
     private UserRepository userRepository;
 

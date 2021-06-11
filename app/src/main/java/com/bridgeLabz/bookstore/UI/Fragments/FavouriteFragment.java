@@ -35,6 +35,7 @@ public class FavouriteFragment extends Fragment {
     private static final String TAG = "FavouriteFragment";
     private RecyclerView recyclerView;
     private int spanCount;
+    private BookFragment bookFragment;
     UserRepository userRepository;
     private BookRepository bookRepository;
 
@@ -63,8 +64,17 @@ public class FavouriteFragment extends Fragment {
         booksListAdapter = new BooksListAdapter(favourites, new OnBookListener() {
             @Override
             public void onBookClick(int position, View viewHolder) {
-                Toast.makeText(getContext(), "Book is in Favourite List", Toast.LENGTH_SHORT).show();
-            }
+                int bookId = booksListAdapter.getItem(position).getBookId();
+                bookFragment = new BookFragment();
+                Bundle bundle = new Bundle();
+
+                bundle.putInt("BookId", bookId);
+
+                bookFragment.setArguments(bundle);
+
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.home_fragment_container, bookFragment)
+                        .addToBackStack(null).commit();            }
         });
         recyclerView.setAdapter(booksListAdapter);
         booksListAdapter.notifyDataSetChanged();

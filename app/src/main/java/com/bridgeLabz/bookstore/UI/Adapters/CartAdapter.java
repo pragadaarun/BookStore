@@ -62,4 +62,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
         this.cartBooksList = cartBooksList;
     }
 
+    public void removeAt(int position) {
+        try{
+            cartBooksList.remove(position);
+            notifyItemRemoved(position);
+        } catch(IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+    }
 }

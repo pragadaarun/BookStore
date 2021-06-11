@@ -10,6 +10,8 @@ import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.helper.CartBookClickListener;
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,8 +62,7 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 itemCount = itemCount + 1;
-                displayPrices(itemCount);
-                cartBookPrice.setText(String.valueOf(bookPrice));
+                updateUI(cart);
                 cartBookClickListener.onAddItemQuantity(cart);
             }
         });
@@ -70,16 +71,21 @@ public class CartViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 itemCount = itemCount - 1;
-                displayPrices(itemCount);
-                cartBookPrice.setText(String.valueOf(bookPrice));
+                updateUI(cart);
                 cartBookClickListener.onMinusItemQuantity(cart, cartPosition);
             }
         });
     }
 
-    private float displayPrices(int itemCount) {
+    private void updateUI(CartModel cart) {
+        cart.setItemQuantities(itemCount);
         itemCountDisplay.setText(String.valueOf(itemCount));
-        bookPrice = cart.getBook().getPrice() * itemCount;
-        return bookPrice;
+        bookPrice = displayPrices(itemCount);
+        cartBookPrice.setText(String.valueOf(bookPrice));
+    }
+
+    private float displayPrices(int itemCount) {
+        float bookPrice = cart.getBook().getPrice() * itemCount;
+        return BigDecimal.valueOf(bookPrice).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

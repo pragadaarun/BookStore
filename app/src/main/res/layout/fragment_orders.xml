@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UI.Fragments.OrdersFragment">
+    tools:context=".UI.Fragments.OrdersFragment"
+    android:background="@drawable/gradient3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,16 +19,15 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/order_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#8C00"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_RecyclerView"
-            android:layout_width="406dp"
-            android:layout_height="674dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

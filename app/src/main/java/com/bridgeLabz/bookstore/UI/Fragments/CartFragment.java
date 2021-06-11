@@ -1,8 +1,6 @@
 package com.bridgeLabz.bookstore.UI.Fragments;
 
-import android.annotation.SuppressLint;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +26,8 @@ import com.bridgeLabz.bookstore.UI.Adapters.CartAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.CartBookClickListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,7 +80,7 @@ public class CartFragment extends Fragment {
         cartAdapter = new CartAdapter(cartItemBooks, new CartBookClickListener() {
             @Override
             public void onAddItemQuantity(CartModel cart) {
-                cartRepository.updateCart(cart.getBook().getBookId());
+                cartRepository.incrementCartItemQuantity(cart.getBook().getBookId());
                 List<CartModel> updatedCart = cartRepository.getCartList();
                 totalPrice = cartRepository.calculateTotalPrice(updatedCart);
                 cartTotalPrice.setText(String.valueOf(totalPrice));
@@ -95,11 +88,13 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onMinusItemQuantity(CartModel cart, int position) {
-                cartRepository.removeCart(cart.getBook().getBookId());
+                if(cart.getItemQuantities() < 2){
+                    cartAdapter.removeAt(position);
+                }
+                cartRepository.decrementCartItemQuantity(cart.getBook().getBookId());
                 List<CartModel> updatedCart = cartRepository.getCartList();
                 totalPrice = cartRepository.calculateTotalPrice(updatedCart);
                 cartTotalPrice.setText(String.valueOf(totalPrice));
-                cartAdapter.notifyItemRemoved(position);
                 cartAdapter.setCartBooksList(updatedCart);
                 if(updatedCart.size() == 0){
                     cartAdapter.notifyDataSetChanged();

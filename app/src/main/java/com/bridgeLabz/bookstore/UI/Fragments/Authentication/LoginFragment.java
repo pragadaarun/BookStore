@@ -82,14 +82,8 @@ public class LoginFragment extends Fragment {
         if(email.isEmpty()){
             loginEmail.setError("Please enter email id");
             loginEmail.requestFocus();
-        } else if(!email.matches("^[a-zA-Z]+([._+-]{0,1}[a-zA-Z0-9]+)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}+(?:\\.[a-z]{2,}){0,1}$")) {
-            loginEmail.setError("Please enter valid email id");
-            loginEmail.requestFocus();
-        }else  if(password.isEmpty()){
+        } else  if(password.isEmpty()){
             loginPassword.setError("Please enter your password");
-            loginPassword.requestFocus();
-        } else  if(!password.matches("(^(?=.*[A-Z]))(?=.*[0-9])(?=.*[a-z])(?=.*[@*&^%#-*+!]{1}).{8,}$")) {
-            loginPassword.setError("Please enter Valid password");
             loginPassword.requestFocus();
         }
         else {

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class CartRepository {
         return cartList;
     }
 
-    public void updateCart(int bookId) {
+    public void incrementCartItemQuantity(int bookId) {
         List<UserModel> userList = userRepository.getUsersList();
         UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
@@ -60,17 +61,14 @@ public class CartRepository {
             CartResponseModel model = userCartItemList.get(i);
             if( model.getBookId() == bookId) {
                 int currentQuantity =  model.getItemQuantities();
-                userCartItemList.remove(model);
                 model.setItemQuantities(currentQuantity + 1);
-                userCartItemList.add(model);
             }
         }
         userList.get(user.getUserId()).setCartItemList(userCartItemList);
         userRepository.writeUsersList(userList);
     }
 
-    public void removeCart(int bookId) {
-
+    public void decrementCartItemQuantity(int bookId) {
         List<UserModel> usersList = userRepository.getUsersList();
         UserModel user = userRepository.getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
@@ -82,7 +80,6 @@ public class CartRepository {
                     userCartItemList.remove(model);
                 } else {
                     model.setItemQuantities(currentQuantity - 1);
-                    userCartItemList.add(model);
                 }
             }
         }
@@ -103,6 +100,6 @@ public class CartRepository {
         for(CartModel cart : cartList){
             totalPrice = totalPrice + cart.getBook().getPrice() * cart.getItemQuantities();
         }
-        return totalPrice;
+        return BigDecimal.valueOf(totalPrice).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }

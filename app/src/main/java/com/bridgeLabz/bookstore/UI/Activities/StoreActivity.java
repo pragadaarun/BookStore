@@ -1,7 +1,6 @@
 package com.bridgeLabz.bookstore.UI.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -25,6 +24,7 @@ public class StoreActivity extends AppCompatActivity {
     private CartFragment cartFragment;
     private OrdersFragment ordersFragment;
     Fragment fragment;
+    public static final String BACK_STACK_TAG_CART_FLOW = "cart_fragment_call";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class StoreActivity extends AppCompatActivity {
         ordersFragment = new OrdersFragment();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
+            getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container,
                     booksListFragment).commit();
         }
 
@@ -76,7 +76,8 @@ public class StoreActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
 
                 fragment = cartFragment;
-                fragmentCall(fragment);
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
+                        fragment).addToBackStack(BACK_STACK_TAG_CART_FLOW).commit();
                 return false;
             }
         });

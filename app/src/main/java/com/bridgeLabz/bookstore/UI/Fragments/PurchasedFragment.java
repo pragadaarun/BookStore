@@ -3,9 +3,11 @@ package com.bridgeLabz.bookstore.UI.Fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
+import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.MyWorker;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -34,6 +37,17 @@ public class PurchasedFragment extends Fragment {
     private UserRepository userRepository;
     private String date;
     private long orderNo;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().hide();
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,23 +67,29 @@ public class PurchasedFragment extends Fragment {
         dateDisplay.setText(date);
         createOrderList(orderNo, date);
         orderId.setText(String.valueOf(orderNo));
+
+        //WorkManager
         final OneTimeWorkRequest.Builder workRequest =
                 new OneTimeWorkRequest.Builder(MyWorker.class);
         Data.Builder data = new Data.Builder();
         data.putString(MyWorker.NOTIFICATION_CHANNEL_ID, "order");
         data.putString(MyWorker.NOTIFICATION_CHANNEL, "ORDERS");
         data.putString(MyWorker.NOTIFICATION_TITLE, "Order Placed Success");
-        data.putString(MyWorker.NOTIFICATION_MESSAGE, "Track the Order with Order Id : " + orderId );
+        data.putString(MyWorker.NOTIFICATION_MESSAGE, "Track the Order with Order Id : " + orderNo );
         workRequest.setInputData(data.build());
         WorkManager.getInstance(getContext()).enqueue(workRequest.build());
 
         continueShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requireActivity().onBackPressed();
+                AppCompatActivity activity = ((AppCompatActivity) getActivity());
+                if(activity != null) {
+                    activity.getSupportFragmentManager()
+                            .popBackStack(StoreActivity.BACK_STACK_TAG_CART_FLOW,
+                                    FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
             }
         });
-        onBackPressed(view);
         return view;
     }
 
@@ -77,28 +97,15 @@ public class PurchasedFragment extends Fragment {
         userRepository.addOrdersList(orderNo, date);
     }
 
-    private void onBackPressed(View view) {
-
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.purchased_toolbar);
-        toolbar.setTitle("Cart List");
-        toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onStop();
-            }
-        });
-    }
-
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        requireActivity().onBackPressed();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+    public void onDestroyView() {
+        super.onDestroyView();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
     }
 }
