@@ -12,7 +12,7 @@
         android:roundIcon="@drawable/ic_book_cart"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookStore">
-        <activity android:name=".UI.Activities.StoreActivity" />
+        <activity android:name=".UI.Activities.HomeActivity" />
         <activity android:name=".UI.Activities.LoginRegisterActivity"/>
         <activity android:name=".UI.Activities.SplashActivity">
         <intent-filter>
