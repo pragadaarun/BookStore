@@ -46,7 +46,6 @@ public class BooksListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
         int orientation = getResources().getConfiguration().orientation;
         File userListFile = new File(getContext().getFilesDir(), "users.json");

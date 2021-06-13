@@ -1,5 +1,7 @@
 package com.bridgeLabz.bookstore.Repository;
 
+import android.content.Context;
+
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.OrderModel;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,16 +84,15 @@ public class UserRepository {
     }
 
     public List<OrderModel> getAllOrders() {
-
         List<UserModel> usersList = getUsersList();
         return usersList.get(sharedPreference.getPresentUserId()).getOrdersList();
     }
 
-    public boolean isCarted(int bookId){
+    public boolean isCarted(int bookId) {
         UserModel user = getLoggedInUser();
         List<CartResponseModel> userCartItemList = user.getCartItemList();
         boolean isCarted = true;
-        for(CartResponseModel cart : userCartItemList){
+        for (CartResponseModel cart : userCartItemList) {
             if (bookId == cart.getBookId()) {
                 isCarted = false;
                 break;
@@ -98,4 +100,11 @@ public class UserRepository {
         }
         return isCarted;
     }
+
+    public void uploadImageToUserFile(String imageUri) {
+        List<UserModel> usersList = getUsersList();
+        usersList.get(sharedPreference.getPresentUserId()).setUserImage(imageUri);
+        writeUsersList(usersList);
+    }
+
 }

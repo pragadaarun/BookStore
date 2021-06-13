@@ -1,5 +1,7 @@
 package com.bridgeLabz.bookstore.Model;
 
+import java.util.List;
+
 public class BookModel {
 
     private int bookId;
@@ -8,6 +10,7 @@ public class BookModel {
     private String description;
     private String bookImage;
     private float price;
+    private List<Review>  reviewList;
     private boolean isCarted;
     private boolean isFavourite;
 
@@ -16,7 +19,7 @@ public class BookModel {
     }
 
     public BookModel(int bookId, String title, String author, String description,
-                     String bookImage, float price, boolean isCarted, boolean isFavourite) {
+                     String bookImage, float price, boolean isCarted, boolean isFavourite, List<Review> reviewList) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -25,6 +28,7 @@ public class BookModel {
         this.bookImage = bookImage;
         this.isCarted = isCarted;
         this.isFavourite = isFavourite;
+        this.reviewList = reviewList;
     }
 
     public BookModel(BookResponseModel bookResponseModel) {
@@ -34,6 +38,7 @@ public class BookModel {
         this.description = bookResponseModel.getDescription();
         this.price = bookResponseModel.getPrice();
         this.bookImage = bookResponseModel.getBookImage();
+        this.reviewList = bookResponseModel.getReviewList();
     }
 
     public String getTitle() {
@@ -98,5 +103,13 @@ public class BookModel {
 
     public void setFavourite(boolean favourite) {
         isFavourite = favourite;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
 }

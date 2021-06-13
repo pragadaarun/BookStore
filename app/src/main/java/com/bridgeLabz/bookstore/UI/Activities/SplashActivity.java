@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
 
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -29,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
             isLoggedIn = sharedPreference.getLoggedIN();
             Intent intent;
             if (isLoggedIn){
-                intent = new Intent(SplashActivity.this, StoreActivity.class);
+                intent = new Intent(SplashActivity.this, HomeActivity.class);
             }else{
                 intent = new Intent(SplashActivity.this, LoginRegisterActivity.class);
             }

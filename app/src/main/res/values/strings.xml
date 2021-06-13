@@ -20,7 +20,7 @@
     <string name="book_title">Book Title</string>
     <string name="book_author"><u>Book Author</u></string>
     <string name="book_price">Book Price</string>
-    <string name="add_to_cart">Add_To_Cart</string>
+    <string name="add_to_cart">Add To Cart</string>
     <string name="item_quantities">Items</string>
     <string name="buy_button">Place Order</string>
     <string name="total_price">Total Price</string>
@@ -42,4 +42,9 @@
     <string name="order_placed_on">Order Placed on</string>
     <string name="date">Date</string>
     <string name="add_address">Add Address</string>
+    <string name="review_user_name">User Name</string>
+    <string name="review_user_text">Review</string>
+    <string name="book_description">Description</string>
+    <string name="add_a_review">Add a Review</string>
+    <string name="review">Review</string>
 </resources>

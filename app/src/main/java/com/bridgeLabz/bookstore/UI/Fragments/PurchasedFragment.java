@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.work.Data;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
-import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
+import com.bridgeLabz.bookstore.UI.Activities.HomeActivity;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.MyWorker;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -28,7 +27,6 @@ import com.bridgeLabz.bookstore.helper.SharedPreference;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class PurchasedFragment extends Fragment {
 
@@ -85,7 +83,7 @@ public class PurchasedFragment extends Fragment {
                 AppCompatActivity activity = ((AppCompatActivity) getActivity());
                 if(activity != null) {
                     activity.getSupportFragmentManager()
-                            .popBackStack(StoreActivity.BACK_STACK_TAG_CART_FLOW,
+                            .popBackStack(HomeActivity.BACK_STACK_TAG_CART_FLOW,
                                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
             }

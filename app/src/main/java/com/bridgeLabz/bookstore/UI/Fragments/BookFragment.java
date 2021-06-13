@@ -5,7 +5,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
+import com.bridgeLabz.bookstore.Model.Review;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
+import com.bridgeLabz.bookstore.UI.Adapters.ReviewAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 public class BookFragment extends Fragment {
@@ -30,9 +36,13 @@ public class BookFragment extends Fragment {
     private ImageView bookImage;
     private TextView bookTitle, bookAuthor;
     private Button addToCart;
-    BookRepository bookRepository;
-    UserRepository userRepository;
+    private BookRepository bookRepository;
+    private UserRepository userRepository;
     private int bookID;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ReviewAdapter reviewAdapter;
+    private static final String TAG = "BookFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,11 +53,14 @@ public class BookFragment extends Fragment {
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
         bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
+        layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+
         bookID = getArguments().getInt("BookId");
         findViews(view);
         setViews();
         setClickListeners();
         onBackPressed(view);
+
         return view;
     }
 
@@ -56,6 +69,7 @@ public class BookFragment extends Fragment {
         bookTitle = view.findViewById(R.id.book_title_text_view);
         bookAuthor = view.findViewById(R.id.book_author_text_view);
         addToCart = view.findViewById(R.id.add_cart_text);
+        recyclerView = view.findViewById(R.id.review_recyclerView);
     }
 
     private void setViews() {
@@ -66,6 +80,13 @@ public class BookFragment extends Fragment {
                 .into(bookImage);
         bookTitle.setText(book.getTitle());
         bookAuthor.setText(book.getAuthor());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        List<Review> reviewList = bookRepository.getBookList().get(bookID).getReviewList();
+        Log.e(TAG, "onCreateView: " + reviewList );
+        reviewAdapter = new ReviewAdapter(reviewList);
+        recyclerView.setAdapter(reviewAdapter);
+        reviewAdapter.notifyDataSetChanged();
     }
 
     private void setClickListeners() {

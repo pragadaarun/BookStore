@@ -67,10 +67,6 @@ public class OrdersFragment extends Fragment {
         });
     }
 
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
 
     @Override
     public void onStop() {

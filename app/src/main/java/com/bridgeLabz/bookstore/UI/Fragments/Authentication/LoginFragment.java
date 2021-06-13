@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
-import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
+import com.bridgeLabz.bookstore.UI.Activities.HomeActivity;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,7 +103,7 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getContext(), "Sign In Successful!", Toast.LENGTH_SHORT).show();
                 sharedPreference.setLoggedIN(true);
                 sharedPreference.setPresentUserId(i);
-                startActivity(new Intent(getContext(), StoreActivity.class));
+                startActivity(new Intent(getContext(), HomeActivity.class));
             }
             else {
                 Toast.makeText(getContext(),"Credentials Wrong", Toast.LENGTH_SHORT).show();

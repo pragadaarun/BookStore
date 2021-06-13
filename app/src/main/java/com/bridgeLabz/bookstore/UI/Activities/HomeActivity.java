@@ -14,27 +14,30 @@ import com.bridgeLabz.bookstore.UI.Fragments.BooksListFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.CartFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.FavouriteFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.OrdersFragment;
+import com.bridgeLabz.bookstore.UI.Fragments.ProfileFragment;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
-public class StoreActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private SharedPreference sharedPreference;
     private BooksListFragment booksListFragment;
     private FavouriteFragment favouriteFragment;
     private CartFragment cartFragment;
     private OrdersFragment ordersFragment;
+    private ProfileFragment profileFragment;
     Fragment fragment;
     public static final String BACK_STACK_TAG_CART_FLOW = "cart_fragment_call";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store);
+        setContentView(R.layout.activity_home);
         sharedPreference = new SharedPreference(this);
         booksListFragment = new BooksListFragment();
         favouriteFragment = new FavouriteFragment();
         cartFragment = new CartFragment();
         ordersFragment = new OrdersFragment();
+        profileFragment = new ProfileFragment();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container,
@@ -51,12 +54,13 @@ public class StoreActivity extends AppCompatActivity {
         MenuItem favourite = menu.findItem(R.id.favourite);
         MenuItem orders = menu.findItem(R.id.orders);
         MenuItem cart = menu.findItem(R.id.cart);
+        MenuItem profile = menu.findItem(R.id.profile);
         logout.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 sharedPreference.setLoggedIN(false);
-                startActivity(new Intent(StoreActivity.this, LoginRegisterActivity.class));
+                startActivity(new Intent(HomeActivity.this, LoginRegisterActivity.class));
                 return false;
             }
         });
@@ -86,6 +90,15 @@ public class StoreActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 fragment = ordersFragment;
+                fragmentCall(fragment);
+                return false;
+            }
+        });
+
+        profile.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                fragment = profileFragment;
                 fragmentCall(fragment);
                 return false;
             }

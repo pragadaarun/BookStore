@@ -22,14 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/order_placed"
-        android:textColor="#B21212"
+        android:textColor="#1834BC"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.648"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/purchased_toolbar" />
 
@@ -42,7 +42,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/orderId"
-        android:textSize="26sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/purchased_date_display"
         app:layout_constraintEnd_toStartOf="@+id/order_id_display"
@@ -53,13 +53,13 @@
         android:id="@+id/order_id_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/orderId"
-        android:textSize="26sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/purchased_date_detail"
+        app:layout_constraintBottom_toTopOf="@+id/purchased_date_display"
         app:layout_constraintStart_toEndOf="@+id/order_id_detail"
         app:layout_constraintTop_toBottomOf="@+id/order_success_display" />
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/continue_shopping"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,9 +78,10 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="122dp"
+        android:layout_width="100dp"
         android:layout_height="110dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/checked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/order_success_display" />
 
     <TextView
-        android:id="@+id/purchased_date_display"
+        android:id="@+id/purchased_date_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -97,24 +98,23 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Date"
-        android:textSize="26sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/continue_shopping_button"
-        app:layout_constraintEnd_toStartOf="@+id/purchased_date_detail"
+        app:layout_constraintEnd_toStartOf="@+id/purchased_date_display"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_id_detail" />
 
     <TextView
-        android:id="@+id/purchased_date_detail"
+        android:id="@+id/purchased_date_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Date"
-        android:textSize="26sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/continue_shopping_button"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
-        app:layout_constraintStart_toEndOf="@+id/purchased_date_display"
+        app:layout_constraintStart_toEndOf="@+id/purchased_date_detail"
         app:layout_constraintTop_toBottomOf="@+id/order_id_display" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

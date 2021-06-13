@@ -1,7 +1,6 @@
 package com.bridgeLabz.bookstore.UI.Fragments.Authentication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,12 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bridgeLabz.bookstore.Model.AddressModel;
-import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.OrderModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
-import com.bridgeLabz.bookstore.UI.Activities.StoreActivity;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,10 +104,12 @@ public class RegisterFragment extends Fragment {
                 List<CartResponseModel> cartItemList = new ArrayList<>();
                 List<AddressModel> addressList = new ArrayList<>();
                 List<OrderModel> ordersList = new ArrayList<>();
+                String userPicture = null;
                 int userId = checkRegisters();
                 sharedPreference.setRegisteredUsersCount(userId);
 //                sharedPreference.setPresentUserId(userId);
-                UserModel user = new UserModel(userId, name, email, password, favouriteItemList, cartItemList, addressList, ordersList);
+                UserModel user = new UserModel(userId, name, email, password, favouriteItemList,
+                        cartItemList, addressList, ordersList, userPicture);
                 userList.add(user);
                 if (file.exists()){
                     ArrayList<UserModel>  userList1 = mapper.readValue(new File(getActivity().getFilesDir(),
