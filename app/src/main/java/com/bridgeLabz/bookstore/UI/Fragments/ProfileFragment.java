@@ -1,7 +1,10 @@
 package com.bridgeLabz.bookstore.UI.Fragments;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -59,6 +64,36 @@ public class ProfileFragment extends Fragment {
     private UserRepository userRepository;
     private static final String TAG = "ProfileFragment";
 
+    private ActivityResultLauncher<Intent> launchImageActivity = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        Uri imageUri = data.getData();
+                        Glide.with(getContext()).load(imageUri).into(profileUserPicture);
+                        String uriImage = imageUri.toString();
+                        userRepository.uploadImageToUserFile(uriImage); }
+                }
+            });
+
+
+    private  ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean result) {
+                    if(result) {
+                        navigateToGallery(launchImageActivity);
+                        Log.e(TAG, "onActivityResult: PERMISSION GRANTED");
+                    } else {
+                        Toast.makeText(getContext(), "Permissions are Denied", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "onActivityResult: PERMISSION DENIED");
+                    }
+                }
+            });
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,38 +136,22 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        ActivityResultLauncher<String> mPermissionResult = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                new ActivityResultCallback<Boolean>() {
-                    @Override
-                    public void onActivityResult(Boolean result) {
-                        if(result) {
-                            Log.e(TAG, "onActivityResult: PERMISSION GRANTED");
-                        } else {
-                            Log.e(TAG, "onActivityResult: PERMISSION DENIED");
-                        }
-                    }
-                });
-
-        ActivityResultLauncher<Intent> launchImageActivity = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
-                            Uri imageUri = data.getData();
-                            Glide.with(getContext()).load(imageUri).into(profileUserPicture);
-                            String uriImage = imageUri.toString();
-                            userRepository.uploadImageToUserFile(uriImage); }
-                    }
-                });
-
         profileUserPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                launchImageActivity.launch(openGalleryIntent);
+
+                if(isExternalStoragePermissionGranted()) {
+                    navigateToGallery(launchImageActivity);
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    // In an educational UI, explain to the user why your app requires this
+                    // permission for a specific feature to behave as expected. In this UI,
+                    // include a "cancel" or "no thanks" button that allows the user to
+                    // continue using your app without granting the permission.
+                    showExternalStoragePermissionDialog();
+                }
+                else{
+                    requestExternalStoragePermission();
+                }
             }
         });
 
@@ -151,6 +170,38 @@ public class ProfileFragment extends Fragment {
         addressAdapter.notifyDataSetChanged();
 
         return view;
+    }
+
+    private void navigateToGallery(ActivityResultLauncher<Intent> launchImageActivity) {
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        launchImageActivity.launch(openGalleryIntent);
+    }
+
+    private void showExternalStoragePermissionDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Storage Permission Required")
+                .setMessage("This Feature requires storage permissions to choose Profile picture")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestExternalStoragePermission();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+    }
+
+    private void requestExternalStoragePermission() {
+        requestPermissionLauncher.launch(
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    private boolean isExternalStoragePermissionGranted() {
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void onBackPressed(View view) {
