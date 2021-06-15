@@ -18,9 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Activities.HomeActivity;
+import com.bridgeLabz.bookstore.helper.AddBadge;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.MyWorker;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -36,6 +38,7 @@ public class PurchasedFragment extends Fragment {
     private UserRepository userRepository;
     private String date;
     private long orderNo;
+    private CartRepository cartRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class PurchasedFragment extends Fragment {
         File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
+        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
         orderNo = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -67,6 +71,13 @@ public class PurchasedFragment extends Fragment {
         dateDisplay.setText(date);
         createOrderList(orderNo, date);
         orderId.setText(String.valueOf(orderNo));
+        //Badge Notification set as Zero
+        try{
+            ((AddBadge) getActivity()).onAddCart(cartRepository.getCartList().size());
+
+        }catch (ClassCastException e){
+            e.printStackTrace();
+        }
 
         //WorkManager
         final OneTimeWorkRequest.Builder workRequest =
