@@ -127,8 +127,8 @@ public class ProfileFragment extends Fragment {
         profileUserEmail.setText(userEmail);
         Glide.with(getContext()).load(userImage).into(profileUserPicture);
         onBackPressed(view);
-        Button addAddressButton = view.findViewById(R.id.profile_address_button);
-        addAddressButton.setOnClickListener(new View.OnClickListener() {
+        profileUserAddress = view.findViewById(R.id.profile_address_button);
+        profileUserAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getParentFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new AddressEditFragment())

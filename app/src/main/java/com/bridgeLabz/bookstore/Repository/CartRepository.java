@@ -32,6 +32,7 @@ public class CartRepository {
         this.file = file;
         bookRepository = new BookRepository(file, userRepository, bookAssetLoader, reviewRepository);
         this.userRepository = userRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<CartModel> getCartList() {
