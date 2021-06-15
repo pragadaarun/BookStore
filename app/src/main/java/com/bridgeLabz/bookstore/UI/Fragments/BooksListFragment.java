@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BooksListFragment extends Fragment {
 
@@ -75,22 +76,34 @@ public class BooksListFragment extends Fragment {
     }
 
     private void createReviewFile() {
-        String userName = null;
-        String jsonStr = null;
+        List<Review> reviewList = new ArrayList<Review>();
         ObjectMapper mapper = new ObjectMapper();
+        File file = new File(getContext().getFilesDir(), "reviews.json");
         try {
-            UserModel user = userRepository.getLoggedInUser();
-            String userReview = "good book";
-            float userRating = 4.0f;
-            int BookId = 1;
-            long reviewID = System.currentTimeMillis();
-            File file = new File(getContext().getFilesDir(), "reviews.json");
-            List<Review> reviewList = new ArrayList<Review>();
-            int userID = user.getUserId();
-            Review review = new Review(userName, userID, reviewID, BookId, userRating, userReview);
-            reviewList.add(review);
+            Random random = new Random();
+            int max = 5;
+            int min = 1;
+            for (int i = 1; i <= bookRepository.getBookList().size(); i++){
+                for (int j = 1; j < 11; j++){
+                    String userName ="random user " + j;
+                    long reviewID = System.currentTimeMillis();
+                    float userRating = min + random.nextFloat() * (max - min);
+                    String userReview = null;
+                    if(userRating >= 4) {
+                        userReview = "Excellent Book";
+                    } else if(userRating >= 3 && userRating < 4) {
+                        userReview = "Good Book";
+                    } else if(userRating >= 2 && userRating <3) {
+                        userReview = "I not think it's Worthy";
+                    } else {
+                        userReview = "I don,t like this book";
+                    }
+                    Review review = new Review(userName, j, reviewID, i, userRating, userReview);
+                    reviewList.add(review);
+                }
+            }
             if (!file.exists()) {
-                jsonStr = mapper.writeValueAsString(reviewList);
+                String jsonStr = mapper.writeValueAsString(reviewList);
                 FileOutputStream fos = getContext().openFileOutput("reviews.json", Context.MODE_PRIVATE);
                 fos.write(jsonStr.getBytes());
                 fos.close();
