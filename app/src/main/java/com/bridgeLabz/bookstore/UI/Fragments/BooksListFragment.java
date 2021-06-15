@@ -81,7 +81,7 @@ public class BooksListFragment extends Fragment {
         try {
             UserModel user = userRepository.getLoggedInUser();
             String userReview = "good book";
-            float userRating =4.0f;
+            float userRating = 4.0f;
             int BookId = 1;
             long reviewID = System.currentTimeMillis();
             File file = new File(getContext().getFilesDir(), "reviews.json");
@@ -89,9 +89,7 @@ public class BooksListFragment extends Fragment {
             int userID = user.getUserId();
             Review review = new Review(userName, userID, reviewID, BookId, userRating, userReview);
             reviewList.add(review);
-            if (file.exists()) {
-
-            } else {
+            if (!file.exists()) {
                 jsonStr = mapper.writeValueAsString(reviewList);
                 FileOutputStream fos = getContext().openFileOutput("reviews.json", Context.MODE_PRIVATE);
                 fos.write(jsonStr.getBytes());

@@ -51,7 +51,7 @@ public class ReviewFragment extends Fragment {
         userReviewTextView = view.findViewById(R.id.review_user_review_text);
         ratingBar = view.findViewById(R.id.user_review_rating_bar);
         submitReview = view.findViewById(R.id.user_review_submit);
-        sharedPreference = new SharedPreference(this.getContext());
+        sharedPreference = new SharedPreference(getContext());
         submitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

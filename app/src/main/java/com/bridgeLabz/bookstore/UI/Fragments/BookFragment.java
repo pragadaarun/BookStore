@@ -21,9 +21,11 @@ import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.Review;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.ReviewAdapter;
+import com.bridgeLabz.bookstore.helper.AddBadge;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.bumptech.glide.Glide;
@@ -49,6 +51,8 @@ public class BookFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ReviewAdapter reviewAdapter;
     private ReviewFragment reviewFragment;
+    private CartRepository cartRepository;
+    private ReviewRepository reviewRepository;
     private static final String TAG = "BookFragment";
 
     @Override
@@ -68,6 +72,8 @@ public class BookFragment extends Fragment {
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
         bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
+        reviewRepository = new ReviewRepository(reviewsFile);
+        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader, reviewRepository);
         layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
 
         bookID = getArguments().getInt("BookId");
@@ -133,6 +139,13 @@ public class BookFragment extends Fragment {
         addToCart.setOnClickListener(v -> {
             bookRepository.addBookToCart(bookID);
             addToCart.setEnabled(false);
+            try{
+                ((AddBadge) getActivity()).onAddCart(cartRepository.getCartList().size());
+
+            }catch (ClassCastException e){
+                e.printStackTrace();
+            }
+
         });
         addReviewButton.setOnClickListener(v -> {
             reviewFragment = new ReviewFragment();

@@ -48,7 +48,7 @@ public class BookRepository {
             for (BookResponseModel bookResponseModel : bookResponseModels) {
                 BookModel favouriteBook = new BookModel(bookResponseModel);
                 float rating = reviewRepository.getAverageRating(bookResponseModel.getBookId());
-
+                favouriteBook.setRating(rating);
                 favouriteBook.setFavourite(favoriteBookIds.contains(bookResponseModel.getBookId()));
                 bookList.add(favouriteBook);
             }

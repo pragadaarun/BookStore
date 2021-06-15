@@ -14,6 +14,7 @@ import java.util.List;
 public class ReviewRepository {
 
     private File file;
+    private static final String TAG = "ReviewRepository";
 
     public ReviewRepository(File file) {
         this.file = file;
@@ -22,20 +23,28 @@ public class ReviewRepository {
     public float getAverageRating(int bookId) {
         float averageRating = 0.0f;
         ObjectMapper mapper = new ObjectMapper();
-        List<Review> reviewsList = new ArrayList<>();
+        int totalReviews = 1;
+        List<Review> reviewsList;
         List<Review> bookReviews = new ArrayList<>();
+        float rating = 0.0f;
         try {
             reviewsList = mapper.readValue(file, new TypeReference<List<Review>>(){} );
             for (int i = 0; i < reviewsList.size(); i++) {
                 if (reviewsList.get(i).getBookID() == bookId){
-                    float rating = reviewsList.get(i).getRating();
+                     rating = rating + reviewsList.get(i).getRating();
+                     totalReviews++;
                 }
             }
+            averageRating = rating/totalReviews;
+            Log.e(TAG, "getAverageRating: " + rating + "  " + totalReviews );
         } catch (IOException e) {
             e.printStackTrace();
         }
         return averageRating;
     }
 
+    public void createReviews() {
+
+    }
 }
 
