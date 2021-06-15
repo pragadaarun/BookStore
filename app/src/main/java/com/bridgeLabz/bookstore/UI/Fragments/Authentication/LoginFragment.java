@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
                 startActivity(new Intent(getContext(), HomeActivity.class));
             }
             else {
-                Toast.makeText(getContext(),"Credentials Wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Sign in Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }

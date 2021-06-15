@@ -29,6 +29,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListViewHolder> 
 
     @NonNull
     @Override
+
     public BooksListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.book_preview,parent,false);

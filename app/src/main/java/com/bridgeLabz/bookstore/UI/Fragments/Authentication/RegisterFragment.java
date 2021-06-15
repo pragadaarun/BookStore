@@ -185,8 +185,8 @@ public class RegisterFragment extends Fragment {
             userPassword.setError("Please enter your password");
             userPassword.requestFocus();
             return false;
-        } else  if (!password.matches("(^(?=.*[A-Z]))(?=.*[0-9])(?=.*[a-z])(?=.*[@*&^%#-*+!]{1}).{8,}$")) {
-            userPassword.setError("Please enter Valid password");
+        } else  if (!password.matches("(^(?=.*[A-Z]))(?=.*[0-9])(?=.*[a-z])(?=.*[@*&^%#-*+!]{1}).{6,}$")) {
+            userPassword.setError("Required 1 special character(!@#..), 1 number (123..), 1 Capital Letter(ABC..), 1 Small Letter, minimum 6 characters");
             userPassword.requestFocus();
             return false;
         } else if (!(password.equals(confirmPassword))) {

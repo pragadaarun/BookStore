@@ -5,7 +5,9 @@ import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.BookResponseModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
+import com.bridgeLabz.bookstore.Model.Review;
 import com.bridgeLabz.bookstore.Model.UserModel;
+import com.bridgeLabz.bookstore.UI.Adapters.ReviewAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,11 +26,13 @@ public class BookRepository {
     private static final String TAG = "BookRepository";
     private UserRepository userRepository;
     private BookAssetLoader bookAssetLoader;
+    private ReviewRepository reviewRepository;
 
-    public BookRepository(File file, UserRepository userRepository, BookAssetLoader bookAssetLoader) {
+    public BookRepository(File file, UserRepository userRepository, BookAssetLoader bookAssetLoader, ReviewRepository reviewRepository) {
         this.file = file;
         this.userRepository = userRepository;
         this.bookAssetLoader = bookAssetLoader;
+        this.reviewRepository = reviewRepository;;
     }
 
     public ArrayList<BookModel> getBookList() {
@@ -43,6 +47,8 @@ public class BookRepository {
             List<Integer> favoriteBookIds = user.getFavouriteItemsList();
             for (BookResponseModel bookResponseModel : bookResponseModels) {
                 BookModel favouriteBook = new BookModel(bookResponseModel);
+                float rating = reviewRepository.getAverageRating(bookResponseModel.getBookId());
+
                 favouriteBook.setFavourite(favoriteBookIds.contains(bookResponseModel.getBookId()));
                 bookList.add(favouriteBook);
             }

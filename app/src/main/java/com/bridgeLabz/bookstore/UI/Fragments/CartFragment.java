@@ -21,6 +21,7 @@ import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.CartAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -55,10 +56,11 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
         sharedPreference = new SharedPreference(getContext());
-        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
-        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader);
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader, new ReviewRepository(reviewsFile));
+        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
         List<CartModel> cartItemBooks = cartRepository.getCartList();
         cartBuyButton = view.findViewById(R.id.cart_buy_button);
         cartTotalPrice = view.findViewById(R.id.cart_total_price);
@@ -126,13 +128,14 @@ public class CartFragment extends Fragment {
         } else {
             cartBuyButton.setEnabled(true);
             cartBuyButton.setOnClickListener(v -> {
-                List<UserModel> usersList = userRepository.getUsersList();
-                List<AddressModel> userAddress = usersList.get(sharedPreference.getPresentUserId()).getAddressList();
-                if (userAddress.size() == 0) {
-                    fragment = new AddressEditFragment();
-                } else {
-                    fragment = new AddressFragment();
-                }
+//                List<UserModel> usersList = userRepository.getUsersList();
+//                List<AddressModel> userAddress = usersList.get(sharedPreference.getPresentUserId()).getAddressList();
+//                if (userAddress.size() == 0) {
+//                    fragment = new AddressEditFragment();
+//                } else {
+//                    fragment = new AddressFragment();
+//                }
+                fragment = new AddressFragment();
                 fragmentCall();
             });
         }

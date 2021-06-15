@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Activities.HomeActivity;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -56,8 +57,9 @@ public class PurchasedFragment extends Fragment {
         dateDisplay = view.findViewById(R.id.purchased_date_display);
         continueShopping = view.findViewById(R.id.continue_shopping_button);
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
         orderNo = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -94,7 +96,6 @@ public class PurchasedFragment extends Fragment {
     private void createOrderList(long orderNo, String date) {
         userRepository.addOrdersList(orderNo, date);
     }
-
 
     @Override
     public void onDestroyView() {

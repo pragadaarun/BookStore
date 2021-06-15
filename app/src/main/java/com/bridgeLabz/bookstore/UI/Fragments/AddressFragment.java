@@ -2,6 +2,7 @@ package com.bridgeLabz.bookstore.UI.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -11,11 +12,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
-import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.AddressAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -34,6 +36,17 @@ public class AddressFragment extends Fragment {
     private UserRepository userRepository;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().hide();
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -41,12 +54,21 @@ public class AddressFragment extends Fragment {
         final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         sharedPreference = new SharedPreference(getContext());
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader, new ReviewRepository(reviewsFile));
         UserModel user = userRepository.getLoggedInUser();
         List<AddressModel> userAddressList = user.getAddressList();
-
-        recyclerView = view.findViewById(R.id.pick_RecyclerView);
+        Button addAddressButton = view.findViewById(R.id.address_add_button);
+        addAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.home_fragment_container, new AddressEditFragment())
+                        .addToBackStack(null).commit();
+            }
+        });
+        recyclerView = view.findViewById(R.id.address_recycle_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         addressAdapter = new AddressAdapter(userAddressList, new OnAddressListener() {
@@ -76,15 +98,14 @@ public class AddressFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+    public void onDestroyView() {
+        super.onDestroyView();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
     }
 
 }

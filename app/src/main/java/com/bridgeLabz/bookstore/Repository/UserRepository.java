@@ -22,11 +22,12 @@ public class UserRepository {
     private SharedPreference sharedPreference;
     private CartRepository cartRepository;
     private File userListFile;
+    private ReviewRepository reviewRepository;
 
-    public UserRepository(File file, SharedPreference sharedPreference, BookAssetLoader bookAssetLoader) {
+    public UserRepository(File file, SharedPreference sharedPreference, BookAssetLoader bookAssetLoader, ReviewRepository reviewRepository) {
         this.userListFile = file;
         this.sharedPreference = sharedPreference;
-        cartRepository = new CartRepository(file, this, bookAssetLoader);
+        cartRepository = new CartRepository(file, this, bookAssetLoader, reviewRepository);
     }
 
     public List<UserModel> getUsersList() {

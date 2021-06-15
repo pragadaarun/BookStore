@@ -3,6 +3,7 @@ package com.bridgeLabz.bookstore.UI.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.AddressAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -53,6 +57,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private AddressAdapter addressAdapter;
     private UserRepository userRepository;
+    private static final String TAG = "ProfileFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,8 +80,9 @@ public class ProfileFragment extends Fragment {
         profileUserPicture = view.findViewById(R.id.profile_user_image);
         sharedPreference = new SharedPreference(this.getContext());
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader, new ReviewRepository(reviewsFile));
         UserModel user = userRepository.getLoggedInUser();
         List<AddressModel> userAddressList = user.getAddressList();
         String userName = user.getUserName();
@@ -86,6 +92,28 @@ public class ProfileFragment extends Fragment {
         profileUserEmail.setText(userEmail);
         Glide.with(getContext()).load(userImage).into(profileUserPicture);
         onBackPressed(view);
+        Button addAddressButton = view.findViewById(R.id.profile_address_button);
+        addAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new AddressEditFragment())
+                        .addToBackStack(null).commit();
+            }
+        });
+
+        ActivityResultLauncher<String> mPermissionResult = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                new ActivityResultCallback<Boolean>() {
+                    @Override
+                    public void onActivityResult(Boolean result) {
+                        if(result) {
+                            Log.e(TAG, "onActivityResult: PERMISSION GRANTED");
+                        } else {
+                            Log.e(TAG, "onActivityResult: PERMISSION DENIED");
+                        }
+                    }
+                });
+
         ActivityResultLauncher<Intent> launchImageActivity = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -96,8 +124,7 @@ public class ProfileFragment extends Fragment {
                             Uri imageUri = data.getData();
                             Glide.with(getContext()).load(imageUri).into(profileUserPicture);
                             String uriImage = imageUri.toString();
-                            userRepository.uploadImageToUserFile(uriImage);
-                        }
+                            userRepository.uploadImageToUserFile(uriImage); }
                     }
                 });
 
@@ -139,7 +166,6 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
-
 
     @Override
     public void onDestroyView() {

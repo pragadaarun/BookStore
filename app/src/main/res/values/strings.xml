@@ -45,6 +45,9 @@
     <string name="review_user_name">User Name</string>
     <string name="review_user_text">Review</string>
     <string name="book_description">Description</string>
-    <string name="add_a_review">Add a Review</string>
+    <string name="add_review">Add Review</string>
     <string name="review">Review</string>
+    <string name="write_your_review">Write your review</string>
+    <string name="discount">Discount</string>
+    <string name="book_mrp">Book MRP</string>
 </resources>

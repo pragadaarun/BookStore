@@ -10,21 +10,25 @@ public class BookResponseModel {
     private String description;
     private String bookImage;
     private float price;
-    private List<Review> reviewList;
+    private float bookMRP;
+    private float discount;
+    private float rating;
 
     public BookResponseModel() {
 
     }
 
     public BookResponseModel(int bookId, String title, String author, String description,
-                     String bookImage, float price, List<Review> reviewList) {
+                     String bookImage, float price, float bookMRP, float discount, float rating) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.description = description;
         this.price = price;
         this.bookImage = bookImage;
-        this.reviewList = reviewList;
+        this.bookMRP = bookMRP;
+        this.discount = discount;
+        this.rating = rating;
     }
 
     public String getTitle() {
@@ -75,11 +79,27 @@ public class BookResponseModel {
         this.bookId = bookId;
     }
 
-    public List<Review> getReviewList() {
-        return reviewList;
+    public float getBookMRP() {
+        return bookMRP;
     }
 
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
+    public void setBookMRP(float bookMRP) {
+        this.bookMRP = bookMRP;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

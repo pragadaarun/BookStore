@@ -22,7 +22,7 @@ public class ReviewViewHolder extends RecyclerView.ViewHolder {
         reviewRating = itemView.findViewById(R.id.review_user_rating);
     }
     public void bind(Review review){
-        reviewUser.setText(review.getAuthor());
+        reviewUser.setText(review.getUserName());
         reviewDetails.setText(review.getReview());
         reviewRating.setRating(review.getRating());
     }

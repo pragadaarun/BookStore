@@ -94,26 +94,27 @@
             android:id="@+id/book_rupees_symbol"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:text="@string/Rs"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/title_description_separator"
             app:layout_constraintEnd_toStartOf="@+id/book_price_text_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/book_author_text_view" />
+            app:layout_constraintTop_toBottomOf="@+id/book_by" />
 
         <TextView
             android:id="@+id/book_price_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="280dp"
+            android:layout_marginEnd="283dp"
+            android:layout_marginStart="4dp"
             android:text="@string/book_price"
-            android:textSize="18sp"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/book_rupees_symbol"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.441"
             app:layout_constraintStart_toEndOf="@+id/book_rupees_symbol" />
 
         <View
@@ -184,65 +185,32 @@
             android:id="@+id/description_review_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/add_review_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_cart_text">
 
         </View>
 
-        <TextView
-            android:id="@+id/add_review_text"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/add_a_review"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/add_review_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycle_view_separator" />
-
         <Button
-            android:id="@+id/add_review_button"
+            android:id="@+id/book_add_review_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/review"
-            app:layout_constraintBottom_toTopOf="@+id/review_recyclerView"
+            android:layout_marginStart="16dp"
+            android:text="@string/add_review"
+            app:layout_constraintBottom_toTopOf="@+id/book_review_recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_review_text"/>
-
-        <View
-            android:id="@+id/recycle_view_separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/review_recyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_review_button">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/description_review_separator" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/review_recyclerView"
+            android:id="@+id/book_review_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -252,7 +220,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_review_button"
+            app:layout_constraintTop_toBottomOf="@+id/book_add_review_button"
             tools:listitem="@layout/review_item">
 
         </androidx.recyclerview.widget.RecyclerView>

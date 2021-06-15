@@ -26,10 +26,11 @@ public class CartRepository {
     private BookRepository bookRepository;
     private UserRepository userRepository;
     private File file;
+    private ReviewRepository reviewRepository;
 
-    public CartRepository(File file , UserRepository userRepository, BookAssetLoader bookAssetLoader) {
+    public CartRepository(File file , UserRepository userRepository, BookAssetLoader bookAssetLoader, ReviewRepository reviewRepository) {
         this.file = file;
-        bookRepository = new BookRepository(file, userRepository, bookAssetLoader);
+        bookRepository = new BookRepository(file, userRepository, bookAssetLoader, reviewRepository);
         this.userRepository = userRepository;
     }
 

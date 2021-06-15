@@ -1,6 +1,7 @@
 package com.bridgeLabz.bookstore.UI.ViewHolders;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -25,7 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BooksListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    public TextView bookTitle, bookAuthor, bookPrice;
+    public TextView bookTitleTextView, bookAuthorTextView, bookPriceTextView,
+            bookMRPTextView, discountTextView, ratingTextView;
     public ImageView bookImage;
     public CheckBox isFavouriteCheckBox;
     private final SharedPreference sharedPreference;
@@ -33,10 +35,13 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
 
     public BooksListViewHolder(@NonNull View itemView, OnBookListener onBookListener) {
         super(itemView);
-        bookTitle = itemView.findViewById(R.id.book_title);
-        bookAuthor = itemView.findViewById(R.id.book_author);
+        bookTitleTextView = itemView.findViewById(R.id.book_title);
+        bookAuthorTextView = itemView.findViewById(R.id.book_author);
         bookImage = itemView.findViewById(R.id.book_image);
-        bookPrice = itemView.findViewById(R.id.book_price);
+        bookPriceTextView = itemView.findViewById(R.id.book_price);
+        bookMRPTextView = itemView.findViewById(R.id.book_mrp_text);
+        discountTextView = itemView.findViewById(R.id.discount_text);
+        ratingTextView = itemView.findViewById(R.id.book_rating);
         isFavouriteCheckBox = itemView.findViewById(R.id.wish_item_checker);
         this.onBookListener = onBookListener;
         itemView.setOnClickListener(this);
@@ -45,9 +50,13 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
 
     public void bind(BookModel book) {
         isFavouriteCheckBox.setChecked(book.isFavourite());
-        bookTitle.setText(book.getTitle());
-        bookAuthor.setText(book.getAuthor());
-        bookPrice.setText(String.valueOf(book.getPrice()));
+        bookTitleTextView.setText(book.getTitle());
+        bookAuthorTextView.setText(book.getAuthor());
+        bookPriceTextView.setText(String.valueOf(book.getPrice()));
+        ratingTextView.setText(String.valueOf(book.getRating()));
+        bookMRPTextView.setPaintFlags(bookMRPTextView.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        bookMRPTextView.setText(String.valueOf(book.getBookMRP()));
+        discountTextView.setText(String.valueOf(book.getDiscount()));
         String imageUri = book.getBookImage();
         Glide.with(itemView.getContext())
                 .load(imageUri)

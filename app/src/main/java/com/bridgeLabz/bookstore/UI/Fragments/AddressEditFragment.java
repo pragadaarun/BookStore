@@ -2,6 +2,7 @@ package com.bridgeLabz.bookstore.UI.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -31,6 +33,18 @@ public class AddressEditFragment extends Fragment {
     private SharedPreference sharedPreference;
     private UserRepository userRepository;
     private static final String TAG = "AddressFragment";
+    private ReviewRepository reviewRepository;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().hide();
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +53,9 @@ public class AddressEditFragment extends Fragment {
         sharedPreference = new SharedPreference(getContext());
         File userListFile = new File(getContext().getFilesDir(), "users.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader);
+        File reviewsList = new File(getContext().getFilesDir(), "reviews.json");
+        reviewRepository = new ReviewRepository(reviewsList);
+        userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader, reviewRepository);
         houseNO = view.findViewById(R.id.address_house_no);
         street = view.findViewById(R.id.address_street);
         city = view.findViewById(R.id.address_city);
@@ -65,10 +81,7 @@ public class AddressEditFragment extends Fragment {
                 address.add(userAddress);
                 usersList.get(sharedPreference.getPresentUserId()).setAddressList(address);
                 userRepository.writeUsersList(usersList);
-
-
-                getParentFragmentManager().beginTransaction().replace(R.id.home_fragment_container, new AddressFragment())
-                        .addToBackStack(null).commit();
+                getParentFragmentManager().popBackStack();
             }
         });
         onBackPressed(view);
@@ -91,13 +104,14 @@ public class AddressEditFragment extends Fragment {
 
     }
 
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
     @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+    public void onDestroyView() {
+        super.onDestroyView();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
     }
 }

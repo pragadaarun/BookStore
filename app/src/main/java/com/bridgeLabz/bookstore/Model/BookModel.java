@@ -10,16 +10,19 @@ public class BookModel {
     private String description;
     private String bookImage;
     private float price;
-    private List<Review>  reviewList;
     private boolean isCarted;
     private boolean isFavourite;
+    private float bookMRP;
+    private float discount;
+    private float rating;
 
     public BookModel() {
 
     }
 
     public BookModel(int bookId, String title, String author, String description,
-                     String bookImage, float price, boolean isCarted, boolean isFavourite, List<Review> reviewList) {
+                     String bookImage, float price, boolean isCarted, boolean isFavourite,
+                     float bookMRP, float discount, float rating) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -28,7 +31,10 @@ public class BookModel {
         this.bookImage = bookImage;
         this.isCarted = isCarted;
         this.isFavourite = isFavourite;
-        this.reviewList = reviewList;
+        this.bookMRP = bookMRP;
+        this.discount = discount;
+        this.rating = rating;
+
     }
 
     public BookModel(BookResponseModel bookResponseModel) {
@@ -38,7 +44,9 @@ public class BookModel {
         this.description = bookResponseModel.getDescription();
         this.price = bookResponseModel.getPrice();
         this.bookImage = bookResponseModel.getBookImage();
-        this.reviewList = bookResponseModel.getReviewList();
+        this.bookMRP = bookResponseModel.getBookMRP();
+        this.discount = bookResponseModel.getDiscount();
+        this.rating = bookResponseModel.getRating();
     }
 
     public String getTitle() {
@@ -105,11 +113,27 @@ public class BookModel {
         isFavourite = favourite;
     }
 
-    public List<Review> getReviewList() {
-        return reviewList;
+    public float getBookMRP() {
+        return bookMRP;
     }
 
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
+    public void setBookMRP(float bookMRP) {
+        this.bookMRP = bookMRP;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

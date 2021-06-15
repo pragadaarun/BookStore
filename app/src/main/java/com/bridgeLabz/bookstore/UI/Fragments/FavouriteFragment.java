@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -39,15 +40,27 @@ public class FavouriteFragment extends Fragment {
     UserRepository userRepository;
     private BookRepository bookRepository;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().hide();
+            }
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favourite, container, false);
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
-        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
+        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
         ArrayList<BookModel> favourites = bookRepository.getFavoriteBooks();
         int orientation = getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -97,14 +110,15 @@ public class FavouriteFragment extends Fragment {
         });
     }
 
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
-    }
 }

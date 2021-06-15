@@ -1,5 +1,6 @@
 package com.bridgeLabz.bookstore.UI.Fragments;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -15,9 +16,11 @@ import android.view.ViewGroup;
 
 import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.BookResponseModel;
+import com.bridgeLabz.bookstore.Model.Review;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.BookRepository;
+import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
@@ -27,6 +30,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -49,9 +53,10 @@ public class BooksListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_books_list, container, false);
         int orientation = getResources().getConfiguration().orientation;
         File userListFile = new File(getContext().getFilesDir(), "users.json");
+        File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader);
-        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader);
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
+        bookRepository = new BookRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             // In landscape
             spanCount = 2;
@@ -63,9 +68,39 @@ public class BooksListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.bookList_RecyclerView);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        createReviewFile();
         initRecyclerView();
 
         return view;
+    }
+
+    private void createReviewFile() {
+        String userName = null;
+        String jsonStr = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            UserModel user = userRepository.getLoggedInUser();
+            String userReview = "good book";
+            float userRating =4.0f;
+            int BookId = 1;
+            long reviewID = System.currentTimeMillis();
+            File file = new File(getContext().getFilesDir(), "reviews.json");
+            List<Review> reviewList = new ArrayList<Review>();
+            int userID = user.getUserId();
+            Review review = new Review(userName, userID, reviewID, BookId, userRating, userReview);
+            reviewList.add(review);
+            if (file.exists()) {
+
+            } else {
+                jsonStr = mapper.writeValueAsString(reviewList);
+                FileOutputStream fos = getContext().openFileOutput("reviews.json", Context.MODE_PRIVATE);
+                fos.write(jsonStr.getBytes());
+                fos.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void initRecyclerView() {
