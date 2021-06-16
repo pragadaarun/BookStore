@@ -36,14 +36,14 @@ public class AddressFragment extends Fragment {
     private UserRepository userRepository;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         if(activity != null) {
             if(activity.getSupportActionBar() != null){
                 activity.getSupportActionBar().hide();
             }
-        }
+        };
     }
 
     @Override
@@ -100,6 +100,17 @@ public class AddressFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         if(activity != null) {
             if(activity.getSupportActionBar() != null){

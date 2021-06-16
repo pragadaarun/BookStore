@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +48,14 @@ public class CartFragment extends Fragment {
     private Fragment fragment;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().hide();
+            }
+        };
     }
 
     @Override
@@ -162,14 +169,15 @@ public class CartFragment extends Fragment {
                 .addToBackStack(null).commit();
     }
 
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).hide();
-    }
-
     @Override
     public void onStop() {
         super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).show();
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        if(activity != null) {
+            if(activity.getSupportActionBar() != null){
+                activity.getSupportActionBar().show();
+            }
+        }
     }
+
 }

@@ -36,14 +36,14 @@ public class AddressEditFragment extends Fragment {
     private ReviewRepository reviewRepository;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         if(activity != null) {
             if(activity.getSupportActionBar() != null){
                 activity.getSupportActionBar().hide();
             }
-        }
+        };
     }
 
     @Override
@@ -105,8 +105,8 @@ public class AddressEditFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
         if(activity != null) {
             if(activity.getSupportActionBar() != null){
