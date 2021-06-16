@@ -128,7 +128,7 @@ public class BookFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reviewAdapter = new ReviewAdapter(reviewsList);
+        reviewAdapter = new ReviewAdapter(bookReviews);
         recyclerView.setAdapter(reviewAdapter);
         reviewAdapter.notifyDataSetChanged();
     }

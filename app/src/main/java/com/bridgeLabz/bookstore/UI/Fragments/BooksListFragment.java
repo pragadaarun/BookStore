@@ -80,29 +80,29 @@ public class BooksListFragment extends Fragment {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(getContext().getFilesDir(), "reviews.json");
         try {
-            Random random = new Random();
-            int max = 5;
-            int min = 1;
-            for (int i = 1; i <= bookRepository.getBookList().size(); i++){
-                for (int j = 1; j < 11; j++){
-                    String userName ="random user " + j;
-                    long reviewID = System.currentTimeMillis();
-                    float userRating = min + random.nextFloat() * (max - min);
-                    String userReview = null;
-                    if(userRating >= 4) {
-                        userReview = "Excellent Book";
-                    } else if(userRating >= 3 && userRating < 4) {
-                        userReview = "Good Book";
-                    } else if(userRating >= 2 && userRating <3) {
-                        userReview = "I not think it's Worthy";
-                    } else {
-                        userReview = "I don,t like this book";
-                    }
-                    Review review = new Review(userName, j, reviewID, i, userRating, userReview);
-                    reviewList.add(review);
-                }
-            }
             if (!file.exists()) {
+                Random random = new Random();
+                int max = 5;
+                int min = 1;
+                for (int i = 1; i <= bookRepository.getBookList().size(); i++) {
+                    for (int j = 1; j < 11; j++) {
+                        String userName = "random user " + j;
+                        long reviewID = System.currentTimeMillis();
+                        float userRating = min + random.nextFloat() * (max - min);
+                        String userReview = null;
+                        if (userRating >= 4) {
+                            userReview = "Excellent Book";
+                        } else if (userRating >= 3 && userRating < 4) {
+                            userReview = "Good Book";
+                        } else if (userRating >= 2 && userRating < 3) {
+                            userReview = "I not think it's Worthy";
+                        } else {
+                            userReview = "I don't like this book";
+                        }
+                        Review review = new Review(userName, j, reviewID, i, userRating, userReview);
+                        reviewList.add(review);
+                    }
+                }
                 String jsonStr = mapper.writeValueAsString(reviewList);
                 FileOutputStream fos = getContext().openFileOutput("reviews.json", Context.MODE_PRIVATE);
                 fos.write(jsonStr.getBytes());

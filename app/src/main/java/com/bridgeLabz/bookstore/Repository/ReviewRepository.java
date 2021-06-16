@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class ReviewRepository {
     }
 
     public float getAverageRating(int bookId) {
-        float averageRating = 0.0f;
         int totalReviews = 0;
         float rating = 0.0f;
         List<Review> reviewsList = getReviewFile();
@@ -43,9 +43,9 @@ public class ReviewRepository {
                 totalReviews++;
             }
         }
-        averageRating = rating / totalReviews;
+        float averageRating = rating / totalReviews;
         Log.e(TAG, "getAverageRating: " + rating + "  " + totalReviews);
-        return averageRating;
+        return BigDecimal.valueOf(averageRating).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 }
 
