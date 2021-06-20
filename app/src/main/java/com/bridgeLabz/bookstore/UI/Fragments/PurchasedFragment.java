@@ -62,11 +62,14 @@ public class PurchasedFragment extends Fragment {
         File userListFile = new File(getContext().getFilesDir(), "users.json");
         File reviewsFile = new File(getContext().getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(getContext());
-        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()), bookAssetLoader, new ReviewRepository(reviewsFile));
-        cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
+        userRepository = new UserRepository(userListFile, new SharedPreference(getContext()),
+                bookAssetLoader, new ReviewRepository(reviewsFile));
+        cartRepository = new CartRepository(userListFile, userRepository,
+                bookAssetLoader, new ReviewRepository(reviewsFile));
         orderNo = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new
+                SimpleDateFormat("MM/dd/yyyy");
         date = dateFormat.format(calendar.getTime());
         dateDisplay.setText(date);
         createOrderList(orderNo, date);

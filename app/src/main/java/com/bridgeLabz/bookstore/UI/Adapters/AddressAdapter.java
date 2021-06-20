@@ -19,7 +19,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressViewHolder> {
 
     private List<AddressModel> addressArrayList = new ArrayList<>();
     private OnAddressListener onAddressListener;
-    private static final String TAG = "Address_Pick_Adapter";
 
     public AddressAdapter(List<AddressModel> addressArrayList, OnAddressListener onAddressListener) {
 

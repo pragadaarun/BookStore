@@ -54,7 +54,6 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews();
         viewListeners();
-
     }
 
     private void findViews() {
@@ -74,9 +73,7 @@ public class RegisterFragment extends Fragment {
         });
 
         loginText.setOnClickListener(v -> {
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.sign_in_container, new LoginFragment())
-                        .addToBackStack(null).commit();
+                getParentFragmentManager().popBackStack();
         });
     }
 

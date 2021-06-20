@@ -9,6 +9,7 @@ import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.UI.ViewHolders.BooksListViewHolder;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.OnFavoriteChangeListener;
 
 import java.util.ArrayList;
 
@@ -21,10 +22,12 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListViewHolder> 
     private ArrayList<BookModel> booksList = new ArrayList<>();
     private static final String TAG = "BooksListAdapter";
     private OnBookListener onBookListener;
+    private OnFavoriteChangeListener onFavoriteChangeListener;
 
-    public BooksListAdapter(ArrayList<BookModel> booksList, OnBookListener onBookListener) {
+    public BooksListAdapter(ArrayList<BookModel> booksList, OnBookListener onBookListener, OnFavoriteChangeListener onFavoriteChangeListener) {
         this.booksList = booksList;
         this.onBookListener = onBookListener;
+        this.onFavoriteChangeListener = onFavoriteChangeListener;
     }
 
     @NonNull
@@ -33,7 +36,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListViewHolder> 
     public BooksListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.book_preview,parent,false);
-        return new BooksListViewHolder(view, onBookListener);
+        return new BooksListViewHolder(view, onBookListener, onFavoriteChangeListener);
     }
 
     @Override
@@ -43,7 +46,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListViewHolder> 
         holder.isFavouriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                holder.favouriteChanged(book, isChecked);
+                holder.favouriteChanged(book, isChecked, position);
             }
         });
     }
@@ -60,5 +63,10 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListViewHolder> 
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void removeAt(BookModel book, int position) {
+        booksList.remove(book);
+        notifyItemRemoved(position);
     }
 }

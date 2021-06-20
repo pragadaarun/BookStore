@@ -11,6 +11,7 @@ import com.bridgeLabz.bookstore.Model.BookModel;
 import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.OnFavoriteChangeListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.bumptech.glide.Glide;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +34,9 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
     public CheckBox isFavouriteCheckBox;
     private final SharedPreference sharedPreference;
     OnBookListener onBookListener;
+    OnFavoriteChangeListener onFavoriteChangeListener;
 
-    public BooksListViewHolder(@NonNull View itemView, OnBookListener onBookListener) {
+    public BooksListViewHolder(@NonNull View itemView, OnBookListener onBookListener, OnFavoriteChangeListener onFavoriteChangeListener) {
         super(itemView);
         bookTitleTextView = itemView.findViewById(R.id.book_title);
         bookAuthorTextView = itemView.findViewById(R.id.book_author);
@@ -46,6 +49,7 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
         this.onBookListener = onBookListener;
         itemView.setOnClickListener(this);
         sharedPreference = new SharedPreference(itemView.getContext());
+        this.onFavoriteChangeListener = onFavoriteChangeListener;
     }
 
     public void bind(BookModel book) {
@@ -53,7 +57,7 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
         bookTitleTextView.setText(book.getTitle());
         bookAuthorTextView.setText(book.getAuthor());
         bookPriceTextView.setText(String.valueOf(book.getPrice()));
-        ratingTextView.setText(String.valueOf(book.getRating()));
+        ratingTextView.setText(String.format(Locale.getDefault(),"%.1f", book.getRating()));
         bookMRPTextView.setPaintFlags(bookMRPTextView.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         bookMRPTextView.setText(String.valueOf(book.getBookMRP()));
         discountTextView.setText(String.valueOf(book.getDiscount()));
@@ -68,7 +72,7 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
         onBookListener.onBookClick(getBindingAdapterPosition(),v);
     }
 
-    public void favouriteChanged(BookModel book, boolean isChecked) {
+    public void favouriteChanged(BookModel book, boolean isChecked, int position) {
         ObjectMapper mapper = new ObjectMapper();
                 if(isChecked) {
                     try {
@@ -101,6 +105,7 @@ public class BooksListViewHolder extends RecyclerView.ViewHolder implements View
                     } catch (IOException | IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
+                    onFavoriteChangeListener.onUnchecked(book, position);
                 }
             }
 }

@@ -25,6 +25,7 @@ import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.BooksListAdapter;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.OnBookListener;
+import com.bridgeLabz.bookstore.helper.OnFavoriteChangeListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -131,6 +132,11 @@ public class BooksListFragment extends Fragment {
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.home_fragment_container, bookFragment)
                         .addToBackStack(null).commit();
+            }
+        }, new OnFavoriteChangeListener() {
+            @Override
+            public void onUnchecked(BookModel book, int position) {
+                //do nothing
             }
         });
         recyclerView.setAdapter(booksListAdapter);

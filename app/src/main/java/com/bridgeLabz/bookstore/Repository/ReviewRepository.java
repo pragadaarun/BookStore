@@ -45,7 +45,7 @@ public class ReviewRepository {
         }
         float averageRating = rating / totalReviews;
         Log.e(TAG, "getAverageRating: " + rating + "  " + totalReviews);
-        return BigDecimal.valueOf(averageRating).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+        return averageRating;
     }
 }
 
