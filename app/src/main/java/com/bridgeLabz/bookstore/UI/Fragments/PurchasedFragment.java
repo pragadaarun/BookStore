@@ -102,6 +102,11 @@ public class PurchasedFragment extends Fragment {
                             .popBackStack(HomeActivity.BACK_STACK_TAG_CART_FLOW,
                                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+                try{
+                    ((AddBadge) requireActivity()).onAddCart(0);
+                }catch (ClassCastException e){
+                    e.printStackTrace();
+                }
             }
         });
         return view;

@@ -25,6 +25,7 @@ import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.ReviewRepository;
 import com.bridgeLabz.bookstore.Repository.UserRepository;
 import com.bridgeLabz.bookstore.UI.Adapters.CartAdapter;
+import com.bridgeLabz.bookstore.helper.AddBadge;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.CartBookClickListener;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
@@ -108,6 +109,11 @@ public class CartFragment extends Fragment {
                 if(updatedCart.size() == 0){
                     cartAdapter.notifyDataSetChanged();
                     cartBuyButton.setEnabled(false);
+                    try{
+                        ((AddBadge) requireActivity()).onAddCart(cartRepository.getCartList().size());
+                    }catch (ClassCastException e){
+                        e.printStackTrace();
+                    }
                 }
             }
 
