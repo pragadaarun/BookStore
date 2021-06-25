@@ -79,10 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
-                android:ellipsize="end"
-                android:ems="10"
-                android:hint="Author"
-                android:inputType="textPersonName"
+                android:text="@string/book_author"
                 android:singleLine="true"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/by"
@@ -107,21 +104,24 @@
                 android:id="@+id/book_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/open_sans_semibold"
                 android:text="@string/book_price"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/discount_text"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/book_mrp_text"
-                app:layout_constraintStart_toEndOf="@+id/indian_rupee_symbol" />
+                app:layout_constraintStart_toEndOf="@+id/indian_rupee_symbol"
+                app:layout_constraintTop_toBottomOf="@+id/book_rating" />
 
             <TextView
                 android:id="@+id/indian_rupee_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/new_rocker"
@@ -161,11 +161,13 @@
                 android:id="@+id/book_mrp_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:text="@string/book_mrp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/discount_text"
+                app:layout_constraintBottom_toBottomOf="@+id/book_price"
                 app:layout_constraintEnd_toStartOf="@+id/discount_text"
-                app:layout_constraintStart_toEndOf="@+id/book_price" />
+                app:layout_constraintStart_toEndOf="@+id/book_price"
+                app:layout_constraintTop_toTopOf="@+id/book_price" />
 
             <TextView
                 android:id="@+id/discount_text"
@@ -175,10 +177,24 @@
                 android:text="@string/discount"
                 android:textColor="#23AC30"
                 android:textStyle="bold|italic"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/book_mrp_text"
+                app:layout_constraintEnd_toStartOf="@+id/off_display"
                 app:layout_constraintStart_toEndOf="@+id/book_mrp_text"
-                app:layout_constraintTop_toBottomOf="@+id/wish_item_checker" />
+                app:layout_constraintTop_toTopOf="@+id/book_mrp_text" />
+
+            <TextView
+                android:id="@+id/off_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/off"
+                android:textColor="#23AC30"
+                android:textStyle="bold|italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/discount_text"
+                app:layout_constraintTop_toTopOf="@+id/discount_text" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

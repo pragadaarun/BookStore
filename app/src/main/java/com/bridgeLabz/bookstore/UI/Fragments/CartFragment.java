@@ -110,7 +110,7 @@ public class CartFragment extends Fragment {
                     cartAdapter.notifyDataSetChanged();
                     cartBuyButton.setEnabled(false);
                     try{
-                        ((AddBadge) requireActivity()).onAddCart(cartRepository.getCartList().size());
+                        ((AddBadge) requireActivity()).onAddCart(updatedCart.size());
                     }catch (ClassCastException e){
                         e.printStackTrace();
                     }
@@ -141,13 +141,6 @@ public class CartFragment extends Fragment {
         } else {
             cartBuyButton.setEnabled(true);
             cartBuyButton.setOnClickListener(v -> {
-//                List<UserModel> usersList = userRepository.getUsersList();
-//                List<AddressModel> userAddress = usersList.get(sharedPreference.getPresentUserId()).getAddressList();
-//                if (userAddress.size() == 0) {
-//                    fragment = new AddressEditFragment();
-//                } else {
-//                    fragment = new AddressFragment();
-//                }
                 fragment = new AddressFragment();
                 fragmentCall();
             });

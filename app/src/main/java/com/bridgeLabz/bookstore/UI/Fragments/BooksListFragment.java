@@ -118,29 +118,29 @@ public class BooksListFragment extends Fragment {
     private void initRecyclerView() {
 
         ArrayList<BookModel> bookArrayList = bookRepository.getBookList();
-        booksListAdapter = new BooksListAdapter(bookArrayList, new OnBookListener() {
-            @Override
-            public void onBookClick(int position, View viewHolder) {
-                int bookId = booksListAdapter.getItem(position).getBookId();
-                bookFragment = new BookFragment();
-                Bundle bundle = new Bundle();
+        booksListAdapter = new BooksListAdapter(bookArrayList,
+                new OnBookListener() {
+                    @Override
+                    public void onBookClick(int position, View viewHolder) {
+                        int bookId = booksListAdapter.getItem(position).getBookId();
+                        bookFragment = new BookFragment();
+                        Bundle bundle = new Bundle();
 
-                bundle.putInt("BookId", bookId);
+                        bundle.putInt("BookId", bookId);
 
-                bookFragment.setArguments(bundle);
+                        bookFragment.setArguments(bundle);
 
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.home_fragment_container, bookFragment)
-                        .addToBackStack(null).commit();
-            }
-        }, new OnFavoriteChangeListener() {
-            @Override
-            public void onUnchecked(BookModel book, int position) {
-                //do nothing
-            }
-        });
+                        getParentFragmentManager().beginTransaction()
+                                .replace(R.id.home_fragment_container, bookFragment)
+                                .addToBackStack(null).commit();
+                        }}, new OnFavoriteChangeListener() {
+                        @Override
+                        public void onUnchecked(BookModel book, int position) {
+                            //do nothing
+                        }
+                    });
         recyclerView.setAdapter(booksListAdapter);
         booksListAdapter.notifyDataSetChanged();
-    }
+                }
 
-}
+    }

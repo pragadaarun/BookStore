@@ -98,17 +98,6 @@ public class AddressFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        if(activity != null) {
-            if(activity.getSupportActionBar() != null){
-                activity.getSupportActionBar().show();
-            }
-        }
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         AppCompatActivity activity = ((AppCompatActivity) getActivity());

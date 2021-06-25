@@ -10,15 +10,19 @@ import com.bridgeLabz.bookstore.UI.ViewHolders.OrderViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 import com.bridgeLabz.bookstore.R;
+import com.bridgeLabz.bookstore.helper.OnOrderClickListener;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrderAdapter  extends RecyclerView.Adapter<OrderViewHolder> {
 
-    List<OrderModel> orderList = new ArrayList<>();
+    private List<OrderModel> orderList = new ArrayList<>();
+    private OnOrderClickListener onOrderClickListener;
 
-    public OrderAdapter(List<OrderModel> orderList){
+    public OrderAdapter(List<OrderModel> orderList, OnOrderClickListener onOrderClickListener){
         this.orderList = orderList;
+        this.onOrderClickListener = onOrderClickListener;
     }
 
     @NonNull
@@ -26,7 +30,7 @@ public class OrderAdapter  extends RecyclerView.Adapter<OrderViewHolder> {
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.book_in_order_preview, parent, false);
-        return new OrderViewHolder(view);
+        return new OrderViewHolder(view, onOrderClickListener);
     }
 
     @Override

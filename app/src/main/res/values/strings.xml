@@ -49,5 +49,9 @@
     <string name="review">Review</string>
     <string name="write_your_review">Write your review</string>
     <string name="discount">Discount</string>
-    <string name="book_mrp">Book MRP</string>
+    <string name="book_mrp">MRP</string>
+    <string name="off">off</string>
+    <string name="address">Address</string>
+    <string name="delivered_address">Delivered Address :</string>
+    <string name="delivery_address">Delivery Address</string>
 </resources>

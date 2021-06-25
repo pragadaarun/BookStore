@@ -108,4 +108,14 @@ public class UserRepository {
         writeUsersList(usersList);
     }
 
+    public OrderModel getOrderById(long orderId) {
+        UserModel user = getLoggedInUser();
+        List<OrderModel> userOrdersList = user.getOrdersList();
+        for(OrderModel order : userOrdersList) {
+            if (order.getOrderId() == orderId){
+                return order;
+            }
+        }
+        return null;
+    }
 }

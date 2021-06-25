@@ -74,13 +74,6 @@ public class PurchasedFragment extends Fragment {
         dateDisplay.setText(date);
         createOrderList(orderNo, date);
         orderId.setText(String.valueOf(orderNo));
-        //Badge Notification set as Zero
-        try{
-            ((AddBadge) getActivity()).onAddCart(cartRepository.getCartList().size());
-
-        }catch (ClassCastException e){
-            e.printStackTrace();
-        }
 
         //WorkManager
         final OneTimeWorkRequest.Builder workRequest =
@@ -102,8 +95,10 @@ public class PurchasedFragment extends Fragment {
                             .popBackStack(HomeActivity.BACK_STACK_TAG_CART_FLOW,
                                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+                //Badge Notification set as Zero
                 try{
-                    ((AddBadge) requireActivity()).onAddCart(0);
+                    ((AddBadge) getActivity()).onAddCart(cartRepository.getCartList().size());
+
                 }catch (ClassCastException e){
                     e.printStackTrace();
                 }

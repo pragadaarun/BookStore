@@ -12,14 +12,15 @@
         android:id="@+id/review_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/review_user_name"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/review_user_name" />
+        android:textStyle="bold" />
 
     <RatingBar
         android:id="@+id/review_user_rating"
@@ -38,12 +39,25 @@
         android:id="@+id/review_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/review_user_text"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="8dp"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/review_item_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/review_user_text" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black"/>
+
+
 </LinearLayout>

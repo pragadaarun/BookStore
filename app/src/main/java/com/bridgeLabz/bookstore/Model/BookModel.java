@@ -10,11 +10,11 @@ public class BookModel {
     private String description;
     private String bookImage;
     private float price;
-    private boolean isCarted;
-    private boolean isFavourite;
     private float bookMRP;
     private float discount;
     private float rating;
+    private boolean isCarted;
+    private boolean isFavourite;
 
     public BookModel() {
 
