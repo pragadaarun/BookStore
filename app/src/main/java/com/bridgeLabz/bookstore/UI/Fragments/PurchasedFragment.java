@@ -66,13 +66,15 @@ public class PurchasedFragment extends Fragment {
                 bookAssetLoader, new ReviewRepository(reviewsFile));
         cartRepository = new CartRepository(userListFile, userRepository,
                 bookAssetLoader, new ReviewRepository(reviewsFile));
+        Bundle bundle = this.getArguments();
+        long deliveryAddressId = bundle.getLong("deliveryAddressId");
         orderNo = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new
                 SimpleDateFormat("MM/dd/yyyy");
         date = dateFormat.format(calendar.getTime());
         dateDisplay.setText(date);
-        createOrderList(orderNo, date);
+        createOrderList(orderNo, date, deliveryAddressId);
         orderId.setText(String.valueOf(orderNo));
 
         //WorkManager
@@ -107,8 +109,8 @@ public class PurchasedFragment extends Fragment {
         return view;
     }
 
-    private void createOrderList(long orderNo, String date) {
-        userRepository.addOrdersList(orderNo, date);
+    private void createOrderList(long orderNo, String date, long deliveryAddressId) {
+        userRepository.addOrdersList(orderNo, date, deliveryAddressId);
     }
 
     @Override

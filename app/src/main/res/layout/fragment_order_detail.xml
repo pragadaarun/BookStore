@@ -97,12 +97,12 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/order_detail_total_price_display"
-            app:layout_constraintBottom_toTopOf="@+id/delivered_address_text_view"
+            app:layout_constraintBottom_toTopOf="@+id/order_detail_delivered_address_text_view"
             app:layout_constraintStart_toEndOf="@+id/order_detail_total_price_display"
             app:layout_constraintTop_toBottomOf="@+id/order_detail_id_date_text_view" />
 
         <TextView
-            android:id="@+id/delivered_address_display"
+            android:id="@+id/order_detail_delivered_address_display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -110,14 +110,14 @@
             android:text="@string/delivered_address"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/delivered_address_text_view"
+            app:layout_constraintBottom_toTopOf="@+id/order_detail_delivered_address_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_detail_total_price_display" />
 
         <TextView
-            android:id="@+id/delivered_address_text_view"
+            android:id="@+id/order_detail_delivered_address_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -128,7 +128,7 @@
             android:textSize="18sp"
             android:maxLines="4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delivered_address_display"
+            app:layout_constraintTop_toBottomOf="@+id/order_detail_delivered_address_display"
             app:layout_constraintHorizontal_bias="0.444"
             app:layout_constraintStart_toStartOf="parent"/>
 
@@ -142,7 +142,7 @@
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delivered_address_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/order_detail_delivered_address_text_view"
             app:layout_constraintBottom_toTopOf="@+id/order_detail_recyclerView">
 
         </View>
@@ -151,6 +151,7 @@
             android:id="@+id/order_detail_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"

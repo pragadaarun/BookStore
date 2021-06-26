@@ -8,16 +8,18 @@ public class OrderModel {
     private float orderTotal;
     private List<CartModel> cartModelList;
     private String orderDate;
+    private long deliveryAddressId;
 
     public OrderModel() {
 
     }
 
-    public OrderModel(long orderId, float orderTotal, List<CartModel> cartModelList, String orderDate) {
+    public OrderModel(long orderId, float orderTotal, List<CartModel> cartModelList, String orderDate, long deliveryAddressId) {
         this.orderId = orderId;
         this.orderTotal = orderTotal;
         this.cartModelList = cartModelList;
         this.orderDate = orderDate;
+        this.deliveryAddressId = deliveryAddressId;
     }
 
     public long getOrderId() {
@@ -52,6 +54,13 @@ public class OrderModel {
         this.orderDate = orderDate;
     }
 
+    public long getDeliveryAddressId() {
+        return deliveryAddressId;
+    }
+
+    public void setDeliveryAddressId(long deliveryAddressId) {
+        this.deliveryAddressId = deliveryAddressId;
+    }
 
     //    orderId : Int
 //    orderTotal : Double

@@ -74,8 +74,13 @@ public class AddressFragment extends Fragment {
         addressAdapter = new AddressAdapter(userAddressList, new OnAddressListener() {
             @Override
             public void onAddressClick(int position, View viewHolder) {
+                long deliveryAddressId = userAddressList.get(position).getAddressId();
+                PurchasedFragment purchasedFragment = new PurchasedFragment();
+                Bundle bundle = new Bundle();
+                bundle.putLong("deliveryAddressId", deliveryAddressId);
+                purchasedFragment.setArguments(bundle);
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.home_fragment_container, new PurchasedFragment()).addToBackStack(null).commit();
+                        .replace(R.id.home_fragment_container, purchasedFragment).addToBackStack(null).commit();
             }
         });
         recyclerView.setAdapter(addressAdapter);

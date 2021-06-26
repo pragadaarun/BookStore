@@ -2,6 +2,7 @@ package com.bridgeLabz.bookstore.Repository;
 
 import android.content.Context;
 
+import com.bridgeLabz.bookstore.Model.AddressModel;
 import com.bridgeLabz.bookstore.Model.CartModel;
 import com.bridgeLabz.bookstore.Model.CartResponseModel;
 import com.bridgeLabz.bookstore.Model.OrderModel;
@@ -68,14 +69,14 @@ public class UserRepository {
         return null;
     }
 
-    public void addOrdersList(long orderNo, String date) {
+    public void addOrdersList(long orderNo, String date, long deliveryAddressId) {
         List<UserModel> usersList = getUsersList();
         UserModel user = getLoggedInUser();
         List<OrderModel> userOrdersList = user.getOrdersList();
         List<CartModel> cartList = cartRepository.getCartList();
         float cartTotalPrice = cartRepository.calculateTotalPrice(cartList);
         //Creating Order list
-        OrderModel order = new OrderModel(orderNo, cartTotalPrice, cartList, date);
+        OrderModel order = new OrderModel(orderNo, cartTotalPrice, cartList, date, deliveryAddressId);
         userOrdersList.add(order);
         usersList.get(user.getUserId()).setOrdersList(userOrdersList);
         //Empty the Cart Items
@@ -118,4 +119,14 @@ public class UserRepository {
         }
         return null;
     }
+
+    public AddressModel getAddressById(long addressId) {
+        UserModel user = getLoggedInUser();
+        List<AddressModel> userAddressList = user.getAddressList();
+        for(AddressModel addressModel : userAddressList) {
+            if (addressModel.getAddressId() == addressId){
+                return addressModel;
+            }
+        }
+        return null;    }
 }
