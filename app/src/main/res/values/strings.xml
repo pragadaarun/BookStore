@@ -24,6 +24,7 @@
     <string name="item_quantities">Items</string>
     <string name="buy_button">Place Order</string>
     <string name="total_price">Total Price</string>
+    <string name="total_price_rupees">Total Price     ₹</string>
     <string name="rupees">Rs.</string>
     <string name="submit">Submit</string>
     <string name="pincode">PinCode</string>
@@ -54,4 +55,6 @@
     <string name="address">Address</string>
     <string name="delivered_address">Delivered Address :</string>
     <string name="delivery_address">Delivery Address</string>
+    <string name="subscription_message_text_view">Your free access to the app has reached the limit, need to pay for further usage of app</string>
+    <string name="pay">Pay</string>
 </resources>

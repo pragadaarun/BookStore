@@ -3,6 +3,7 @@ package com.bridgeLabz.bookstore.UI.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bridgeLabz.bookstore.Model.UserModel;
 import com.bridgeLabz.bookstore.R;
 import com.bridgeLabz.bookstore.Repository.CartRepository;
 import com.bridgeLabz.bookstore.Repository.ReviewRepository;
@@ -20,11 +22,14 @@ import com.bridgeLabz.bookstore.UI.Fragments.CartFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.FavouriteFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.OrdersFragment;
 import com.bridgeLabz.bookstore.UI.Fragments.ProfileFragment;
+import com.bridgeLabz.bookstore.UI.Fragments.UserSubscriptionFragment;
 import com.bridgeLabz.bookstore.helper.AddBadge;
 import com.bridgeLabz.bookstore.helper.BookAssetLoader;
 import com.bridgeLabz.bookstore.helper.SharedPreference;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity  implements AddBadge {
 
@@ -34,7 +39,7 @@ public class HomeActivity extends AppCompatActivity  implements AddBadge {
     private CartFragment cartFragment;
     private OrdersFragment ordersFragment;
     private ProfileFragment profileFragment;
-    private Fragment fragment;
+    private UserSubscriptionFragment userSubscriptionFragment;
     public static final String BACK_STACK_TAG_CART_FLOW = "cart_fragment_call";
     private TextView textCartItemCount;
     private int badges;
@@ -45,25 +50,29 @@ public class HomeActivity extends AppCompatActivity  implements AddBadge {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        initializeValues();
+        badges = cartRepository.getCartList().size();
+
+        if (savedInstanceState == null) {
+            defaultFragmentCall();
+        }
+
+    }
+
+    private void initializeValues() {
         sharedPreference = new SharedPreference(this);
         booksListFragment = new BooksListFragment();
         favouriteFragment = new FavouriteFragment();
         cartFragment = new CartFragment();
         ordersFragment = new OrdersFragment();
         profileFragment = new ProfileFragment();
+        userSubscriptionFragment = new UserSubscriptionFragment();
         File userListFile = new File(getFilesDir(), "users.json");
         File reviewsFile = new File(getFilesDir(), "reviews.json");
         BookAssetLoader bookAssetLoader = new BookAssetLoader(this);
         sharedPreference = new SharedPreference(this);
         userRepository = new UserRepository(userListFile, sharedPreference, bookAssetLoader, new ReviewRepository(reviewsFile));
         cartRepository = new CartRepository(userListFile, userRepository, bookAssetLoader, new ReviewRepository(reviewsFile));
-        badges = cartRepository.getCartList().size();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container,
-                    booksListFragment).commit();
-        }
-
     }
 
     @Override
@@ -110,19 +119,16 @@ public class HomeActivity extends AppCompatActivity  implements AddBadge {
                 return true;
             }
             case R.id.favourite: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
-                        favouriteFragment).addToBackStack(null).commit();
+                fragmentCall(favouriteFragment);
                 return true;
             }
             case R.id.orders: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
-                        ordersFragment).addToBackStack(null).commit();
+                fragmentCall(ordersFragment);
 
                 return true;
             }
             case R.id.profile: {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_container,
-                        profileFragment).addToBackStack(null).commit();
+                fragmentCall(profileFragment);
                 return true;
             }
 
@@ -151,5 +157,24 @@ public class HomeActivity extends AppCompatActivity  implements AddBadge {
             }
         }
 
+    }
+
+    private void defaultFragmentCall() {
+        int userAccess;
+        boolean userSubscription;
+        List<UserModel> userList = userRepository.getUsersList();
+        UserModel user = userRepository.getLoggedInUser();
+        userAccess = user.getUserAccessCount();
+        userAccess++;
+        userSubscription = user.isUserSubscription();
+        if (userAccess < 6 || !userSubscription) {
+            getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container,
+                    booksListFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.home_fragment_container, userSubscriptionFragment).addToBackStack(null).commit();
+        }
+        userList.get(user.getUserId()).setUserAccessCount(userAccess);
+        userRepository.writeUsersList(userList);
     }
 }

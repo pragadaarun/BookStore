@@ -13,6 +13,8 @@ public class UserModel {
     private List<AddressModel> addressList;
     private List<OrderModel> ordersList;
     private String userImage;
+    private int userAccessCount;
+    private boolean isUserSubscription;
 
     public UserModel() {
 
@@ -20,7 +22,8 @@ public class UserModel {
 
     public UserModel(int userId, String userName, String userEmail, String userPassword,
                      List<Integer> favouriteItemsList, List<CartResponseModel> cartItemList,
-                     List<AddressModel> addressList, List<OrderModel> ordersList, String userImage) {
+                     List<AddressModel> addressList, List<OrderModel> ordersList, String userImage,
+                     int userAccessCount, boolean isUserSubscription) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -30,6 +33,8 @@ public class UserModel {
         this.addressList = addressList;
         this.ordersList = ordersList;
         this.userImage = userImage;
+        this.userAccessCount = userAccessCount;
+        this.isUserSubscription = isUserSubscription;
     }
 
     public String getUserName() {
@@ -102,5 +107,21 @@ public class UserModel {
 
     public void setUserImage(String userImage) {
         this.userImage = userImage;
+    }
+
+    public int getUserAccessCount() {
+        return userAccessCount;
+    }
+
+    public void setUserAccessCount(int userAccessCount) {
+        this.userAccessCount = userAccessCount;
+    }
+
+    public boolean isUserSubscription() {
+        return isUserSubscription;
+    }
+
+    public void setUserSubscription(boolean isUserSubscription) {
+        this.isUserSubscription = isUserSubscription;
     }
 }

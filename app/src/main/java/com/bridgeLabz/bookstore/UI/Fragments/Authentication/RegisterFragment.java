@@ -106,7 +106,7 @@ public class RegisterFragment extends Fragment {
                 sharedPreference.setRegisteredUsersCount(userId);
 //                sharedPreference.setPresentUserId(userId);
                 UserModel user = new UserModel(userId, name, email, password, favouriteItemList,
-                        cartItemList, addressList, ordersList, userPicture);
+                        cartItemList, addressList, ordersList, userPicture, 0, false);
                 userList.add(user);
                 if (file.exists()){
                     ArrayList<UserModel>  userList1 = mapper.readValue(new File(getActivity().getFilesDir(),
