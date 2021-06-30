@@ -52,13 +52,13 @@ public class UserSubscriptionFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<UserModel> userList = userRepository.getUsersList();
-                UserModel user = userRepository.getLoggedInUser();
-                userList.get(user.getUserId()).setUserSubscription(true);
-                userRepository.writeUsersList(userList);
-                BooksListFragment booksListFragment = new BooksListFragment();
+//                List<UserModel> userList = userRepository.getUsersList();
+//                UserModel user = userRepository.getLoggedInUser();
+//                userList.get(user.getUserId()).setUserSubscription(true);
+//                userRepository.writeUsersList(userList);
+                PaymentFragment paymentFragment = new PaymentFragment();
                 getParentFragmentManager().beginTransaction()
-                        .add(R.id.home_fragment_container, booksListFragment).commit();
+                        .replace(R.id.home_fragment_container, paymentFragment).commit();
             }
         });
         return view;

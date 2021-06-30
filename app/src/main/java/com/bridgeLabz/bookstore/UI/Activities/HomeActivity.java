@@ -167,12 +167,13 @@ public class HomeActivity extends AppCompatActivity  implements AddBadge {
         userAccess = user.getUserAccessCount();
         userAccess++;
         userSubscription = user.isUserSubscription();
-        if (userAccess < 6 || !userSubscription) {
             getSupportFragmentManager().beginTransaction().add(R.id.home_fragment_container,
                     booksListFragment).commit();
+        if (userAccess < 6 || !userSubscription) {
+
         } else {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.home_fragment_container, userSubscriptionFragment).addToBackStack(null).commit();
+                    .add(R.id.home_fragment_container, userSubscriptionFragment).commit();
         }
         userList.get(user.getUserId()).setUserAccessCount(userAccess);
         userRepository.writeUsersList(userList);
